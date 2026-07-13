@@ -445,6 +445,35 @@ thead th:last-child  { padding: 10px 4px; }
 .goal-val:focus { background: #fffbeb; padding: 2px 5px; margin: 0 -5px; }
 .goal-val:empty::before { content: '—'; color: #c7c7cc; pointer-events: none; }
 
+/* ---- Images ---- */
+.row-images { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.row-image-wrap { position: relative; display: inline-block; width: 100%; }
+.row-image-wrap img {
+  width: 100%; max-height: 340px; object-fit: contain;
+  border-radius: 10px; border: 1px solid #e5e5ea;
+  background: #f5f5f7; display: block; cursor: zoom-in;
+}
+.row-image-remove {
+  position: absolute; top: 6px; right: 6px;
+  background: rgba(0,0,0,0.55); color: #fff; border: none;
+  border-radius: 50%; width: 22px; height: 22px; font-size: 13px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  line-height: 1; font-family: inherit;
+}
+.add-image-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: none; border: 1px solid #e5e5ea; border-radius: 20px;
+  padding: 3px 9px; font-size: 11px; color: #86868b; font-family: inherit;
+  cursor: pointer; margin-top: 8px; transition: all 0.15s;
+}
+.add-image-btn:hover { border-color: #0071e3; color: #0071e3; background: #f0f4ff; }
+.img-lightbox-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+  z-index: 9999; align-items: center; justify-content: center; cursor: zoom-out;
+}
+.img-lightbox-overlay.open { display: flex; }
+.img-lightbox-overlay img { max-width: 92vw; max-height: 92vh; border-radius: 8px; object-fit: contain; }
+
 /* ---- Comments ---- */
 .comment-trigger {
   display: inline-flex; align-items: center; gap: 4px;
@@ -654,14 +683,14 @@ function renderGoals() {
 const TABS = ['principles', 'goals', 'roadmap'];
 
 let principles = [
-  { id: 'p1', title: 'Lead with Reasons to Do', desc: 'Surface the value prop before the tap. Remove the question "why should I try this?" from the experience entirely.' },
-  { id: 'p2', title: 'Reduce Friction at Join', desc: 'When a buyer taps Join, they should know exactly what they\'re walking into. Clarity at the join moment reduces drop-off.' },
-  { id: 'p3', title: 'Reduce the Cost of Trial', desc: 'The path Live → Event → Back to Search must be one tap. The lower the perceived cost of trying, the more buyers will try.' },
-  { id: 'p4', title: 'Explainability', desc: '\"Because you love vintage jewelry\" — not just \"Recommended for You.\" Explainability earns trust at scale.' },
-  { id: 'p5', title: "One Size Doesn't Fit All", desc: 'Ranking should be personalized to the buyer — segment, category affinity, session intent — not a single list served to everyone.' },
-  { id: 'p6', title: 'Continuous Discovery', desc: 'Optimize for session depth, not just entry. Strong sequencing and minimal dead ends turn a single view into a habit.' },
-  { id: 'p7', title: 'Plan to Build Global', desc: 'Every feature is designed for all markets from day one. International scalability is a design constraint, not an afterthought.' },
-  { id: 'p8', title: 'Cross-Platform Parity', desc: 'Discovery quality should not depend on the device a buyer picks up. Buyers move between devices — the experience should not.' }
+  { id: 'p1', title: 'Earn the Tap Before You Ask for It', desc: 'Nobody opens eBay to watch live shopping. They arrive for something else and get surprised. That means we have to do the selling — show them why this specific stream, right now, is worth stopping for. Answer "why this?" before they ever have to ask.' },
+  { id: 'p2', title: 'Make the Unknown Feel Known', desc: 'The biggest drop-off at join isn\'t a technical problem — it\'s uncertainty. Buyers hesitate because they don\'t know what they\'re walking into. The right signal before the tap — a seller\'s name, a category, a price point — replaces the question "what is this?" with "I want this."' },
+  { id: 'p3', title: 'Make Trying Feel Free', desc: 'People don\'t avoid new things because they\'re hard. They avoid them because leaving feels costly. If a buyer can tap in, glance, and return in one motion — without losing their place — the perceived risk of trying drops to zero. Low exit cost is as important as high entry value.' },
+  { id: 'p4', title: 'Show Your Work', desc: '"Recommended for You" is a shrug. "Because you watched vintage jewelry last week" is a reason. Buyers trust recommendations they can interrogate. When we explain why something is surfaced, we\'re not just being transparent — we\'re building the kind of trust that turns a visit into a habit.' },
+  { id: 'p5', title: 'Different Buyers, Different Jobs', desc: 'A buyer who has never watched a stream and one who tunes in every morning want fundamentally different things from the same screen. Ranking one list for both isn\'t neutral — it actively fails one of them. Segment, category affinity, and session intent aren\'t nice-to-haves. They\'re the minimum required to be relevant.' },
+  { id: 'p6', title: 'One Good Stream Should Lead to Another', desc: 'The job isn\'t done when a buyer joins an event — it starts there. If they leave and hit a dead end, the habit never forms. Every exit point is a chance to keep the session alive. Design for the loop, not just the click.' },
+  { id: 'p7', title: 'Build for the World from Day One', desc: 'Features built for one market carry hidden assumptions about language, currency, seller behavior, and buyer trust. Bolting on international support later doesn\'t remove those assumptions — it works around them. Global scalability is a design constraint, not a phase two.' },
+  { id: 'p8', title: 'The Experience Should Not Depend on the Device', desc: 'A buyer who discovers Live on mobile should not get a worse experience because they switched to desktop. The quality of discovery — relevance, speed, richness — should be a product promise, not a platform lottery. Wherever the buyer is, the experience should meet them.' },
 ];
 
 function renderPrinciples() {
@@ -749,8 +778,8 @@ let rows = [
   },
   {
     id: 16,
-    title: 'eBay Live Brand Refresh: Live Pulse Visual Identity',
-    hypothesis: 'If we replace static green "LIVE" indicators and the shopping bag navigation icon with an animated Live Pulse signal that uses motion instead of color to draw attention, buyers will more instinctively recognize and enter live content — increasing discovery rates across all surfaces.\n\nContext\nJason Brightman: Remove green fields, replace with Live Pulse that minimizes green and uses motion to draw attention. Replace shopping bag icon in navigation with a graphic representation of Live Pulse. Experiment with animating the transition.\n\nRisk Assessment (Ah Hyun Cho)\nHomepage: High risk — visibility change may cause breakage. Must couple with module experience updates (different UI, contextual copy) to avoid drop-off.\nLive Hub: Medium risk — manageable.\nIn-viewer: Low risk.\nSearch: Low risk — search experience has room to improve; adopt new design as we go.\n\nLaunch Requirement\nPair brand change with: updated module UI, contextual copy explaining Live Pulse, and surface-level relevance guardrails.\n\nOwnership: Prerna / Kate (execution). Rahul on thread with Jason.',
+    title: 'All Buyers: Homepage Entry Surface Branding',
+    hypothesis: 'Customer Hypothesis\nIf we improve the recognizability of eBay Live entry surfaces through clearer branding and visual identity, buyers will discover and enter Live at higher rates.\n\nSuccess Metrics\n↑ Homepage Live CTR\n↑ Live Entry Rate\n↑ Quality Views\n\nExperience Guardrails\nNo degradation in Homepage engagement or Core Commerce metrics.\n\nVariation 1 – Homepage Navigation Chip\nExperience\nReplace the existing eBay Live chip branding with the new Live Pulse visual identity.\nExperience Principle\nExplainability\n\nVariation 2 – Bottom Navigation Icon\nExperience\nReplace the existing Live bottom navigation icon with the new Live Pulse visual identity.\nExperience Principle\nExplainability',
     theme: 'Brand',
     surfaces: { HP: true, Search: true, 'Live Hub': true, VC: true },
     outcomes: { O1: 'H' },
@@ -923,13 +952,13 @@ try {
     _nid = Math.max(...rows.map(r => r.id)) + 1;
     // Inject any new source rows missing from localStorage (by id)
     const defaultRows_snapshot = [
-      { id: 16, title: 'eBay Live Brand Refresh: Live Pulse Visual Identity', insertAfter: 2 }
+      { id: 16, title: 'All Buyers: Homepage Entry Surface Branding', insertAfter: 2 }
     ];
     defaultRows_snapshot.forEach(snap => {
       if (!rows.find(r => r.id === snap.id)) {
         const newRow = rows.length > 0 ? null : null; // find from source
         // Find the full row from the pre-loaded default rows array (before localStorage override)
-        const src = [{ id:16, title:'eBay Live Brand Refresh: Live Pulse Visual Identity', hypothesis:'If we replace static green "LIVE" indicators and the shopping bag navigation icon with an animated Live Pulse signal that uses motion instead of color to draw attention, buyers will more instinctively recognize and enter live content — increasing discovery rates across all surfaces.\n\nContext\nJason Brightman: Remove green fields, replace with Live Pulse that minimizes green and uses motion to draw attention. Replace shopping bag icon in navigation with a graphic representation of Live Pulse. Experiment with animating the transition.\n\nRisk Assessment (Ah Hyun Cho)\nHomepage: High risk — visibility change may cause breakage. Must couple with module experience updates (different UI, contextual copy) to avoid drop-off.\nLive Hub: Medium risk — manageable.\nIn-viewer: Low risk.\nSearch: Low risk — search experience has room to improve; adopt new design as we go.\n\nLaunch Requirement\nPair brand change with: updated module UI, contextual copy explaining Live Pulse, and surface-level relevance guardrails.\n\nOwnership: Prerna / Kate (execution). Rahul on thread with Jason.', theme:'Brand', surfaces:{HP:true,Search:true,'Live Hub':true,VC:true}, outcomes:{O1:'H'}, biggestBet:true, effort:'High', notes:'Cross-surface brand change. Homepage breakage risk — must pair with module experience updates.' }];
+        const src = [{ id:16, title:'All Buyers: Homepage Entry Surface Branding', hypothesis:'Customer Hypothesis\nIf we improve the recognizability of eBay Live entry surfaces through clearer branding and visual identity, buyers will discover and enter Live at higher rates.\n\nSuccess Metrics\n↑ Homepage Live CTR\n↑ Live Entry Rate\n↑ Quality Views\n\nExperience Guardrails\nNo degradation in Homepage engagement or Core Commerce metrics.\n\nVariation 1 – Homepage Navigation Chip\nExperience\nReplace the existing eBay Live chip branding with the new Live Pulse visual identity.\nExperience Principle\nExplainability\n\nVariation 2 – Bottom Navigation Icon\nExperience\nReplace the existing Live bottom navigation icon with the new Live Pulse visual identity.\nExperience Principle\nExplainability', theme:'Brand', surfaces:{HP:true,Search:false,'Live Hub':false,VC:false}, outcomes:{O1:'H'}, biggestBet:true, effort:'High', notes:'Cross-surface brand change. Homepage breakage risk — must pair with module experience updates.' }];
         rows.splice(snap.insertAfter, 0, src[0]);
       }
     });
@@ -1067,6 +1096,40 @@ function hideAllComments() {
   document.getElementById('cmodal-overlay').classList.remove('open');
 }
 
+// ---- Image attachments ----
+function addImage(rowId) {
+  const inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = 'image/*';
+  inp.onchange = () => {
+    const file = inp.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const r = getRow(rowId);
+      if (!r) return;
+      if (!r.images) r.images = [];
+      r.images.push({ data: e.target.result, name: file.name });
+      render();
+    };
+    reader.readAsDataURL(file);
+  };
+  inp.click();
+}
+function removeImage(rowId, idx) {
+  const r = getRow(rowId);
+  if (!r || !r.images) return;
+  r.images.splice(idx, 1);
+  render();
+}
+function openLightbox(src) {
+  const ov = document.getElementById('img-lightbox-overlay');
+  ov.querySelector('img').src = src;
+  ov.classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('img-lightbox-overlay').classList.remove('open');
+}
+
 function getRow(id) { return rows.find(r => r.id === id); }
 
 function esc(s) {
@@ -1164,6 +1227,12 @@ function buildRowHTML(r, rank) {
       <td>
         <div class="row-title" contenteditable="true" data-id="${r.id}" data-field="title">${esc(r.title)}</div>
         <div class="row-hyp"   contenteditable="true" data-id="${r.id}" data-field="hypothesis">${renderHtml(r.hypothesis)}</div>
+        ${r.images && r.images.length ? `<div class="row-images">${r.images.map((img, i) => `
+          <div class="row-image-wrap">
+            <img src="${img.data}" alt="${esc(img.name)}" onclick="openLightbox('${img.data}')" title="Click to enlarge">
+            <button class="row-image-remove" onclick="removeImage(${r.id},${i})" title="Remove">×</button>
+          </div>`).join('')}</div>` : ''}
+        <button class="add-image-btn" onclick="addImage(${r.id})">📎 Add Screenshot</button>
         <button class="comment-trigger" data-ca="row-${r.id}" onclick="toggleCommentThread('row-${r.id}')">💬 Comment</button>
         <div class="comment-thread" id="ct-row-${r.id}"></div>
       </td>
@@ -1193,7 +1262,7 @@ function render() {
   syncEditables();
   const tbody = document.getElementById('tbody');
   const htmlRows = rows.map((r, i) => buildRowHTML(r, i));
-  if (rows.length >= 7) htmlRows.splice(7, 0, CUTLINE_ROW);
+  if (rows.length >= 8) htmlRows.splice(8, 0, CUTLINE_ROW);
   tbody.innerHTML = htmlRows.join('');
   bindEditableListeners(tbody);
   updateAllTriggers();
@@ -1419,6 +1488,10 @@ function deleteGoalRow(id) {
   renderGoals();
 }
 </script>
+
+<div class="img-lightbox-overlay" id="img-lightbox-overlay" onclick="closeLightbox()">
+  <img src="" alt="Screenshot">
+</div>
 
 <div class="cmodal-overlay" id="cmodal-overlay" onclick="if(event.target===this)hideAllComments()">
   <div class="cmodal">
