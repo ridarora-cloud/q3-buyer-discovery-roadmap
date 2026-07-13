@@ -511,6 +511,7 @@ thead th:last-child  { padding: 10px 4px; }
   <div class="hdr-right">
     <button class="btn btn-dark" onclick="addRow()">+ Add Initiative</button>
     <button class="btn btn-blue" onclick="saveChanges()">Save Changes</button>
+    <button class="btn btn-dark" onclick="downloadForGitHub()" title="Download file with your data baked in, ready to upload to GitHub">⬇ Download for GitHub</button>
   </div>
 </div>
 
@@ -711,7 +712,7 @@ const SURFACES = ['HP', 'Search', 'Live Hub', 'VC'];
 const OUTCOME_LABELS = { O1: 'Increase New-to-Live Users', O3: 'Retain Habitual Users', O4: 'Convert Non-Habitual', O5: 'Grow Demand Categories' };
 const OUTCOMES = ['O1', 'O3', 'O4', 'O5'];
 const EFFORTS  = ['Low', 'Medium', 'High'];
-let _nid = 16;
+let _nid = 17;
 let _resizing = null;
 
 let goals = [
@@ -745,6 +746,17 @@ let rows = [
     effort: 'Medium',
     notes: 'JB: Define the Audience',
     customerHypothesis: 'If a new buyer is matched to a top trusted seller first, it would help them have a quality first session, making it easier to trust the Live format and come back.'
+  },
+  {
+    id: 16,
+    title: 'eBay Live Brand Refresh: Live Pulse Visual Identity',
+    hypothesis: 'If we replace static green "LIVE" indicators and the shopping bag navigation icon with an animated Live Pulse signal that uses motion instead of color to draw attention, buyers will more instinctively recognize and enter live content — increasing discovery rates across all surfaces.\n\nContext\nJason Brightman: Remove green fields, replace with Live Pulse that minimizes green and uses motion to draw attention. Replace shopping bag icon in navigation with a graphic representation of Live Pulse. Experiment with animating the transition.\n\nRisk Assessment (Ah Hyun Cho)\nHomepage: High risk — visibility change may cause breakage. Must couple with module experience updates (different UI, contextual copy) to avoid drop-off.\nLive Hub: Medium risk — manageable.\nIn-viewer: Low risk.\nSearch: Low risk — search experience has room to improve; adopt new design as we go.\n\nLaunch Requirement\nPair brand change with: updated module UI, contextual copy explaining Live Pulse, and surface-level relevance guardrails.\n\nOwnership: Prerna / Kate (execution). Rahul on thread with Jason.',
+    theme: 'Brand',
+    surfaces: { HP: true, Search: true, 'Live Hub': true, VC: true },
+    outcomes: { O1: 'H' },
+    biggestBet: true,
+    effort: 'High',
+    notes: 'Cross-surface brand change. Homepage breakage risk — must pair with module experience updates.'
   },
   {
     id: 3,
@@ -906,7 +918,22 @@ let rows = [
 
 try {
   const saved = localStorage.getItem('q3-roadmap-v1');
-  if (saved) { rows = JSON.parse(saved); _nid = Math.max(...rows.map(r => r.id)) + 1; }
+  if (saved) {
+    rows = JSON.parse(saved);
+    _nid = Math.max(...rows.map(r => r.id)) + 1;
+    // Inject any new source rows missing from localStorage (by id)
+    const defaultRows_snapshot = [
+      { id: 16, title: 'eBay Live Brand Refresh: Live Pulse Visual Identity', insertAfter: 2 }
+    ];
+    defaultRows_snapshot.forEach(snap => {
+      if (!rows.find(r => r.id === snap.id)) {
+        const newRow = rows.length > 0 ? null : null; // find from source
+        // Find the full row from the pre-loaded default rows array (before localStorage override)
+        const src = [{ id:16, title:'eBay Live Brand Refresh: Live Pulse Visual Identity', hypothesis:'If we replace static green "LIVE" indicators and the shopping bag navigation icon with an animated Live Pulse signal that uses motion instead of color to draw attention, buyers will more instinctively recognize and enter live content — increasing discovery rates across all surfaces.\n\nContext\nJason Brightman: Remove green fields, replace with Live Pulse that minimizes green and uses motion to draw attention. Replace shopping bag icon in navigation with a graphic representation of Live Pulse. Experiment with animating the transition.\n\nRisk Assessment (Ah Hyun Cho)\nHomepage: High risk — visibility change may cause breakage. Must couple with module experience updates (different UI, contextual copy) to avoid drop-off.\nLive Hub: Medium risk — manageable.\nIn-viewer: Low risk.\nSearch: Low risk — search experience has room to improve; adopt new design as we go.\n\nLaunch Requirement\nPair brand change with: updated module UI, contextual copy explaining Live Pulse, and surface-level relevance guardrails.\n\nOwnership: Prerna / Kate (execution). Rahul on thread with Jason.', theme:'Brand', surfaces:{HP:true,Search:true,'Live Hub':true,VC:true}, outcomes:{O1:'H'}, biggestBet:true, effort:'High', notes:'Cross-surface brand change. Homepage breakage risk — must pair with module experience updates.' }];
+        rows.splice(snap.insertAfter, 0, src[0]);
+      }
+    });
+  }
   const savedGoals = localStorage.getItem('q3-goals-v1');
   if (savedGoals) { goals = JSON.parse(savedGoals); }
   const savedPrinciples = localStorage.getItem('q3-principles-v1');
@@ -1279,6 +1306,32 @@ function moveDown(id) {
   if (i >= rows.length - 1) return;
   [rows[i], rows[i + 1]] = [rows[i + 1], rows[i]];
   render();
+}
+
+function downloadForGitHub() {
+  syncEditables();
+  // Build a seed script that bakes current data into the page,
+  // always refreshing data but preserving any reviewer comments.
+  const existing_comments = JSON.stringify(comments);
+  const seed = `<script id="q3-seed">
+(function(){
+  var existing = localStorage.getItem('q3-comments-v1');
+  localStorage.setItem('q3-roadmap-v1',    ${JSON.stringify(JSON.stringify(rows))});
+  localStorage.setItem('q3-principles-v1', ${JSON.stringify(JSON.stringify(principles))});
+  localStorage.setItem('q3-goals-v1',      ${JSON.stringify(JSON.stringify(goals))});
+  localStorage.setItem('q3-metrics-v1',    ${JSON.stringify(JSON.stringify(metrics))});
+  if (!existing) localStorage.setItem('q3-comments-v1', ${JSON.stringify(existing_comments)});
+})();
+<\/script>`;
+  // Remove any previous seed script, then inject fresh one after <body>
+  let html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  html = html.replace(/<script id="q3-seed">[\s\S]*?<\/script>\n?/, '');
+  html = html.replace(/<body>/, '<body>\n' + seed);
+  const blob = new Blob([html], { type: 'text/html' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'index.html'; a.click();
+  URL.revokeObjectURL(url);
 }
 
 function saveChanges() {
