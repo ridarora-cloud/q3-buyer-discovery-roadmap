@@ -1,0 +1,2637 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q3 Buyer Discovery Roadmap</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  min-height: 100vh;
+}
+
+.page-header {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  padding: 18px 40px;
+  border-bottom: 1px solid #d2d2d7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.hdr-left h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.4px; color: #1d1d1f; }
+.hdr-left p  { font-size: 12px; color: #86868b; margin-top: 2px; }
+.hdr-right   { display: flex; gap: 8px; }
+
+.btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+.btn:hover { opacity: 0.82; }
+.btn-dark { background: #1d1d1f; color: #fff; }
+.btn-blue { background: #0071e3; color: #fff; }
+
+.main { padding: 0; }
+
+.table-wrap {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #d2d2d7;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+
+colgroup col:nth-child(1) { width: 1.5%; }
+colgroup col:nth-child(2) { width: 39%;  }
+colgroup col:nth-child(3) { width: 8%;  }
+colgroup col:nth-child(4) { width: 11%; }
+colgroup col:nth-child(5) { width: 13%; }
+colgroup col:nth-child(6) { width: 26%; }
+colgroup col:nth-child(7) { width: 1.5%; }
+
+thead th {
+  padding: 10px 16px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6e6e73;
+  text-align: left;
+  border-bottom: 1px solid #d2d2d7;
+  position: relative;
+}
+
+/* Column resize handle */
+.resize-handle {
+  position: absolute;
+  top: 0; right: -4px; bottom: 0;
+  width: 8px;
+  cursor: col-resize;
+  z-index: 10;
+}
+.resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 15%; bottom: 15%;
+  left: 3px; width: 2px;
+  border-radius: 1px;
+  background: transparent;
+  transition: background 0.15s;
+}
+.resize-handle:hover::after,
+.resize-handle.active::after { background: #2563eb; }
+
+tbody tr { border-bottom: 2px solid #e5e5ea; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #f9f9fb; }
+td { padding: 20px 16px; vertical-align: top; }
+
+/* Cut line */
+.cutline-row { border-bottom: none !important; }
+.cutline-row:hover { background: transparent !important; }
+.cutline-row td { padding: 4px 0; }
+.cutline {
+  display: flex; align-items: center; gap: 12px; padding: 0 16px;
+}
+.cutline::before, .cutline::after {
+  content: ''; flex: 1; height: 2px;
+  background: repeating-linear-gradient(90deg,#ef4444 0,#ef4444 6px,transparent 6px,transparent 14px);
+}
+.cutline-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: #ef4444; white-space: nowrap;
+  padding: 4px 12px; background: #fff1f0;
+  border: 1.5px solid #fecaca; border-radius: 20px;
+}
+
+/* Initiative column */
+.row-title {
+  font-size: 14px; font-weight: 600; line-height: 1.4; color: #1d1d1f;
+  outline: none; border-radius: 5px; word-break: break-word;
+}
+.row-title:focus { background: #f0f4ff; padding: 2px 5px; margin: -2px -5px; }
+
+.row-hyp {
+  font-size: 12px; color: #3d3d3f; line-height: 1.55;
+  margin-top: 6px; outline: none; border-radius: 5px; word-break: break-word;
+  max-height: none;
+}
+.row-hyp:focus { max-height: none; }
+.row-hyp:focus { background: #f0f4ff; padding: 2px 5px; margin: 4px -5px 0; }
+.row-hyp div, .row-hyp p { margin: 0; min-height: 1em; }
+.row-title div, .row-title p { margin: 0; display: inline; }
+
+/* Customer Hypothesis */
+.cust-hyp {
+  font-size: 12px; color: #1d1d1f; line-height: 1.55;
+  outline: none; border-radius: 5px; word-break: break-word;
+}
+.cust-hyp:focus { background: #f0fdf4; padding: 2px 5px; margin: 0 -5px; }
+.cust-hyp:empty::before { content: "What does the customer feel or do?"; color: #c7c7cc; pointer-events: none; }
+
+/* Theme */
+.theme-tag {
+  display: inline-block; background: #f5f5f7; border-radius: 6px;
+  padding: 4px 10px; font-size: 12px; color: #1d1d1f; font-weight: 500; outline: none;
+  cursor: text; white-space: nowrap; min-width: 40px;
+}
+.theme-tag:focus { background: #e8f0fe; color: #0071e3; }
+
+/* Chips */
+.chip-row { display: flex; flex-wrap: wrap; gap: 4px; }
+.out-chip { display: flex; align-items: baseline; gap: 3px; }
+.out-code { font-weight: 700; white-space: nowrap; }
+.out-lbl  { font-size: 10px; font-weight: 400; white-space: normal; line-height: 1.3; }
+
+.chip {
+  padding: 3px 8px; border-radius: 5px; font-size: 11px; font-weight: 500;
+  cursor: pointer; user-select: none; border: 1.5px solid;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  line-height: 1.4;
+}
+
+.chip.surf-off { background: #f3f3f3; color: #ccc; border-color: #ebebeb; }
+.chip.surf-on  { background: #111;    color: #fff; border-color: #111; }
+
+.chip.out-off  { background: #f5f5f5; color: #ccc; border-color: #eee; }
+.chip.out-on.O1 { background: #eef2ff; color: #4338ca; border-color: #c7d2fe; }
+.chip.out-on.O2 { background: #fdf4ff; color: #a21caf; border-color: #e9d5ff; }
+.chip.out-on.O3 { background: #fff7ed; color: #c2410c; border-color: #fed7aa; }
+.chip.out-on.O4 { background: #faf5ff; color: #7e22ce; border-color: #e9d5ff; }
+.chip.out-on.O5 { background: #f0fdf4; color: #16a34a; border-color: #86efac; }
+
+/* Impact column */
+.impact-col { display: flex; flex-direction: column; gap: 7px; }
+
+.bb-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600;
+  border: 1.5px solid;
+  transition: all 0.12s; width: fit-content;
+}
+.bb-badge.bb-on  { background: #fff7ed; color: #c2410c; border-color: #fdba74; }
+.bb-badge.bb-off { background: #fafafa; color: #ddd;    border-color: #eee; }
+
+.out-impact-rows { display: flex; flex-direction: column; gap: 4px; }
+.out-impact-row  { display: flex; align-items: center; gap: 6px; }
+
+.out-imp-label { font-size: 10.5px; font-weight: 700; width: 22px; text-align: right; flex-shrink: 0; }
+.out-imp-label.lO1 { color: #4338ca; }
+.out-imp-label.lO2 { color: #a21caf; }
+.out-imp-label.lO3 { color: #c2410c; }
+.out-imp-label.lO4 { color: #7e22ce; }
+.out-imp-label.lO5 { color: #16a34a; }
+
+.lmh-group { display: flex; gap: 2px; }
+
+.lmh-btn {
+  width: 30px; height: 22px; border-radius: 5px; border: 1.5px solid #e5e5e5;
+  background: #fff; font-size: 11px; font-weight: 600; color: #ccc;
+  cursor: pointer; font-family: inherit; transition: all 0.12s;
+}
+.lmh-btn:hover:not([class*="sel-"]) { border-color: #bbb; color: #999; }
+.lmh-btn.sel-L { background: #f3f4f6; color: #6b7280; border-color: #d1d5db; }
+.lmh-btn.sel-M { background: #fef9c3; color: #92400e; border-color: #fde68a; }
+.lmh-btn.sel-H { background: #dcfce7; color: #15803d; border-color: #86efac; }
+
+/* Effort */
+.effort-line { display: flex; align-items: center; gap: 4px; }
+.effort-sel {
+  font-size: 12px; color: #1d1d1f; background: transparent; border: none;
+  outline: none; cursor: pointer; font-family: inherit; padding: 2px 4px;
+  border-radius: 4px; -webkit-appearance: none; appearance: none; font-weight: 500;
+}
+.effort-sel:hover { background: #f5f5f7; }
+.effort-label { font-size: 12px; color: #86868b; }
+
+/* Notes */
+.notes-field {
+  font-size: 12px; color: #6e6e73; line-height: 1.45;
+  outline: none; border-radius: 5px; word-break: break-word; min-height: 16px;
+}
+.notes-field:focus { background: #fffbeb; padding: 2px 5px; margin: 0 -5px; }
+.notes-field:empty::before { content: "Add guardrail or notes..."; color: #c7c7cc; pointer-events: none; }
+
+/* Rank */
+.rank-cell { text-align: center; vertical-align: middle !important; padding: 0 4px !important; }
+thead th:first-child { padding: 10px 4px; text-align: center; }
+thead th:last-child  { padding: 10px 4px; }
+.rank-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: #1d1d1f; border: none;
+  color: #ffffff; font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto; flex-shrink: 0; letter-spacing: 0;
+}
+
+/* Move + delete */
+.actions-td { padding: 0 4px !important; text-align: center; vertical-align: middle; }
+.row-actions { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.move-btn {
+  background: none; border: none; cursor: pointer; color: #c7c7cc;
+  font-size: 10px; width: 20px; height: 16px; border-radius: 3px;
+  display: flex; align-items: center; justify-content: center; transition: all 0.12s;
+}
+.move-btn:hover { background: #f3f4f6; color: #374151; }
+.move-btn:disabled { opacity: 0.2; cursor: default; pointer-events: none; }
+
+/* Delete */
+.del-btn {
+  background: none; border: none; cursor: pointer; color: #ddd;
+  font-size: 12px; width: 20px; height: 20px; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center; transition: all 0.12s;
+}
+.del-btn:hover { background: #fee2e2; color: #ef4444; }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: #1d1d1f; color: #fff; padding: 10px 18px;
+  border-radius: 9px; font-size: 13px; font-weight: 500;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 0.25s, transform 0.25s cubic-bezier(0.16,1,0.3,1);
+  pointer-events: none; z-index: 999;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+/* Exec metrics view */
+.metrics-wrap { padding: 36px 40px; display: flex; flex-direction: column; gap: 24px; }
+
+.seg-block {
+  background: #fff; border-radius: 14px;
+  border: 1px solid #d2d2d7; overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.seg-header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 24px; border-left: 4px solid transparent;
+  border-bottom: 1px solid #f0f0f2;
+}
+.seg-name { font-size: 15px; font-weight: 700; color: #1d1d1f; letter-spacing: -0.3px; }
+.seg-subseg {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; color: #86868b; background: #f5f5f7;
+  padding: 3px 9px; border-radius: 20px;
+}
+.seg-outcome {
+  margin-left: auto; font-size: 12px; font-weight: 600;
+  padding: 4px 12px; border-radius: 20px; border: 1.5px solid;
+}
+
+.metrics-tbl { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.metrics-tbl th {
+  padding: 8px 12px; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase; color: #86868b;
+  text-align: left; background: #fafafa; border-bottom: 1px solid #f0f0f2;
+  overflow: hidden;
+}
+.metrics-tbl td { padding: 12px 12px; border-bottom: 1px solid #f8f8f8; vertical-align: middle; overflow: hidden; }
+.metrics-tbl tr:last-child td { border-bottom: none; }
+.metrics-tbl tr:hover td { background: #fafafa; }
+.metrics-tbl tr.row-deprio td { opacity: 0.4; }
+.metrics-tbl tr.row-deprio td .metric-name { text-decoration: line-through; }
+
+.col-metric   { width: 28%; }
+.col-outcome  { width: 20%; }
+.col-level    { width: 7%; }
+.col-def      { width: 27%; }
+.col-baseline { width: 9%; }
+.col-goal     { width: 9%; }
+
+.metric-name { font-size: 13px; font-weight: 600; color: #1d1d1f; margin-bottom: 3px; }
+.metric-def-txt { font-size: 11px; color: #86868b; line-height: 1.5; }
+
+.outcome-pill {
+  display: inline-block; font-size: 11px; font-weight: 600;
+  padding: 3px 10px; border-radius: 20px; border: 1.5px solid;
+}
+.lvl-badge {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 5px; letter-spacing: 0.05em;
+}
+.lvl-L1 { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.lvl-L2 { background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe; }
+
+.metric-editable {
+  font-size: 13px; font-weight: 500; color: #1d1d1f;
+  outline: none; border-radius: 6px; min-height: 20px;
+  padding: 4px 8px; margin: 0 -8px;
+  border: 1.5px solid transparent; transition: border-color 0.15s;
+}
+.metric-editable:focus { border-color: #d2d2d7; background: #fafafa; }
+.metric-editable:empty::before { content: '—'; color: #c7c7cc; pointer-events: none; font-weight: 400; }
+
+.goal-editable { color: #0071e3; }
+.goal-editable:empty::before { color: #c7c7cc; }
+
+/* Tab navigation */
+.tab-nav {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid #d2d2d7;
+  position: sticky; top: 60px; z-index: 18;
+}
+.tab-nav-inner {
+  display: flex; align-items: center;
+  padding: 0 40px; gap: 4px;
+}
+.tab-btn {
+  padding: 13px 18px; font-size: 13px; font-weight: 500;
+  color: #86868b; border: none; border-bottom: 2px solid transparent;
+  background: none; cursor: pointer; font-family: inherit;
+  margin-bottom: -1px; letter-spacing: -0.1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab-btn:hover { color: #1d1d1f; }
+.tab-btn.tab-active { color: #1d1d1f; border-bottom-color: #1d1d1f; }
+.tab-nav-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.share-btn {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 12px; font-size: 12px; font-weight: 500;
+  background: #f5f5f7; color: #1d1d1f; border: none;
+  border-radius: 20px; cursor: pointer; font-family: inherit;
+  transition: background 0.12s;
+}
+.share-btn:hover { background: #e8e8ed; }
+
+.tab-section { display: none; }
+.tab-section.tab-visible { display: block; }
+
+/* Principles */
+.principles-wrap { padding: 40px; }
+.principles-section-hdr {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: #86868b; margin-bottom: 28px;
+}
+.principles-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+}
+.principle-card {
+  background: #fff; border-radius: 14px; padding: 28px 24px;
+  border: 1px solid #d2d2d7; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: box-shadow 0.2s;
+}
+.principle-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+.principle-num { font-size: 12px; color: #86868b; font-weight: 500; margin-bottom: 8px; }
+.principle-title {
+  font-size: 17px; font-weight: 600; color: #1d1d1f;
+  margin-bottom: 12px; outline: none; border-radius: 5px;
+  line-height: 1.3; word-break: break-word;
+}
+.principle-title:focus { background: #f5f5f7; padding: 2px 6px; margin-bottom: 10px; }
+.principle-desc {
+  font-size: 13px; color: #3d3d3f; line-height: 1.65;
+  outline: none; border-radius: 5px; word-break: break-word;
+}
+.principle-desc:focus { background: #f5f5f7; padding: 4px 6px; margin: 0 -6px; }
+
+
+/* Goals section */
+.goals-section {
+  background: #fff; border-radius: 12px; border: 1px solid #d2d2d7;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 20px; overflow: hidden;
+}
+.goals-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 20px; border-bottom: 1px solid #d2d2d7;
+}
+.goals-hdr-left { display: flex; align-items: center; gap: 10px; }
+.goals-hdr span { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #6e6e73; }
+.btn-sm {
+  padding: 4px 10px; font-size: 11px; font-weight: 600;
+  background: #f3f4f6; color: #374151; border: none; border-radius: 6px;
+  cursor: pointer; font-family: inherit; transition: background 0.12s;
+}
+.btn-sm:hover { background: #e5e7eb; }
+.goals-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.goals-table th {
+  padding: 8px 16px; font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; text-align: left;
+  background: #fafafa; border-bottom: 1px solid #d2d2d7; position: relative;
+}
+.goals-table th.gO1 { color: #3730a3; }
+.goals-table th.gO2 { color: #86198f; }
+.goals-table th.gO3 { color: #9a3412; }
+.goals-table th.gO4 { color: #6b21a8; }
+.goals-table th.gO5 { color: #15803d; }
+.goals-table td { padding: 10px 16px; border-bottom: 1px solid #f0f0f2; vertical-align: top; }
+.goals-table tr:last-child td { border-bottom: none; }
+.goals-table tr:hover td { background: #fafafa; }
+.goal-seg {
+  font-size: 13px; font-weight: 600; color: #1d1d1f;
+  outline: none; border-radius: 4px; word-break: break-word;
+}
+.goal-seg:focus { background: #f0f4ff; padding: 2px 5px; margin: 0 -5px; }
+.goal-val {
+  font-size: 12px; color: #3d3d3f; line-height: 1.45;
+  outline: none; border-radius: 4px; min-height: 18px; word-break: break-word;
+}
+.goal-val:focus { background: #fffbeb; padding: 2px 5px; margin: 0 -5px; }
+.goal-val:empty::before { content: '—'; color: #c7c7cc; pointer-events: none; }
+
+/* ---- Images ---- */
+.row-images { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.row-image-wrap { position: relative; display: inline-block; width: 100%; }
+.row-image-wrap img {
+  width: 100%; max-height: 340px; object-fit: contain;
+  border-radius: 10px; border: 1px solid #e5e5ea;
+  background: #f5f5f7; display: block; cursor: zoom-in;
+}
+.row-image-remove {
+  position: absolute; top: 6px; right: 6px;
+  background: rgba(0,0,0,0.55); color: #fff; border: none;
+  border-radius: 50%; width: 22px; height: 22px; font-size: 13px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  line-height: 1; font-family: inherit;
+}
+.add-image-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: none; border: 1px solid #e5e5ea; border-radius: 20px;
+  padding: 3px 9px; font-size: 11px; color: #86868b; font-family: inherit;
+  cursor: pointer; margin-top: 8px; transition: all 0.15s;
+}
+.add-image-btn:hover { border-color: #0071e3; color: #0071e3; background: #f0f4ff; }
+.img-lightbox-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+  z-index: 9999; align-items: center; justify-content: center; cursor: zoom-out;
+}
+.img-lightbox-overlay.open { display: flex; }
+.img-lightbox-overlay img { max-width: 92vw; max-height: 92vh; border-radius: 8px; object-fit: contain; }
+
+/* ---- Comments ---- */
+.comment-trigger {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: none; border: 1px solid #e5e5ea; border-radius: 20px;
+  padding: 3px 9px; font-size: 11px; color: #86868b; font-family: inherit;
+  cursor: pointer; transition: all 0.15s; margin-top: 10px;
+}
+.comment-trigger:hover { background: #f0f4ff; border-color: #0071e3; color: #0071e3; }
+.comment-trigger.has-comments { border-color: #0071e3; color: #0071e3; background: #f0f8ff; font-weight: 600; }
+.comment-thread { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid #e5e5ea; }
+.comment-thread.open { display: block; }
+.comment-item { display: flex; gap: 8px; margin-bottom: 10px; }
+.comment-avatar {
+  width: 24px; height: 24px; border-radius: 50%; color: #fff;
+  font-size: 10px; font-weight: 700; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.comment-body { flex: 1; min-width: 0; }
+.comment-meta { font-size: 10px; color: #86868b; margin-bottom: 2px; }
+.comment-text { font-size: 12px; color: #1d1d1f; line-height: 1.5; word-break: break-word; }
+.comment-input-row { display: flex; gap: 6px; margin-top: 8px; }
+.comment-input {
+  flex: 1; padding: 7px 10px; border: 1px solid #d2d2d7; border-radius: 8px;
+  font-size: 12px; font-family: inherit; resize: none; outline: none; min-height: 38px;
+}
+.comment-input:focus { border-color: #0071e3; }
+.comment-submit {
+  padding: 7px 13px; background: #0071e3; color: #fff; border: none;
+  border-radius: 8px; font-size: 12px; font-family: inherit; cursor: pointer;
+}
+.comment-submit:hover { background: #0077ed; }
+.comments-nav-btn {
+  background: none; border: 1px solid #d2d2d7; border-radius: 8px;
+  padding: 5px 12px; font-size: 13px; color: #1d1d1f; font-family: inherit; cursor: pointer;
+}
+.comments-nav-btn:hover { background: #f5f5f7; }
+.comments-nav-btn.has-comments { border-color: #0071e3; color: #0071e3; font-weight: 600; }
+.cmodal-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35);
+  z-index: 3000; justify-content: center; align-items: flex-end;
+}
+.cmodal-overlay.open { display: flex; }
+.cmodal {
+  background: #fff; border-radius: 20px 20px 0 0; width: 100%; max-width: 700px;
+  max-height: 72vh; overflow-y: auto; padding: 28px 28px 40px;
+}
+.cmodal-hdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.cmodal-hdr h2 { font-size: 18px; font-weight: 700; }
+.cmodal-close { background: none; border: none; font-size: 22px; cursor: pointer; color: #86868b; line-height: 1; }
+.csec-title {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: #86868b; margin: 18px 0 8px; padding-bottom: 6px; border-bottom: 1px solid #e5e5ea;
+}
+.cno-comments { color: #86868b; font-size: 13px; padding: 24px 0; text-align: center; }
+</style>
+</head>
+<body>
+<script id="q3-seed">
+(function(){
+  var existing = localStorage.getItem('q3-comments-v1');
+  localStorage.setItem('q3-roadmap-v1', "[{\"id\":3,\"title\":\"Non-Habitual (Live Engaged): Preferred Seller Discovery\",\"hypothesis\":\"<b>Customer Hypothesis</b><br>If we prominently surface sellers that buyers already know through prior purchases, watch history, follows, or other high-confidence affinity signals, non-habitual buyers will reconnect with familiar sellers more easily, increasing engagement and accelerating habit formation.<br><br><br><b>Success Metrics</b><br>↑ Quality Views<br>↑ Module CTR<br>↑ Repeat Viewer Rate<br>↑ Watch Duration<br>↑ Habit Formation Rate<br><br><br><b>Experience Guardrail</b><br>Only surface sellers when a qualifying buyer affinity signal exists; otherwise, suppress the Preferred Seller experience.<br><br><b>Variation 1 – Module Experience<br>Experience</b><br><br>Surface a dedicated Preferred Seller module.<br><br><br><b>Algorithm Updates</b><br>Rank sellers using buyer affinity signals:<br>Followed sellers<br>Previously purchased from<br>Previously watched (≥ X minutes in the last Y days)<br>Additional high-confidence buyer affinity signals<br><br><b>Variation 2 – In-Tile Experience<br>Experience</b><br>Increase seller identity prominence within existing event tiles (Whatnot-style).<br><b>Experience Tests</b><br>1) Seller identity at the top of the event tile<br>2) Test&nbsp;Stronger seller branding and visual hierarchy\",\"theme\":\"Reactivation\",\"surfaces\":{\"HP\":true,\"Search\":false,\"Live Hub\":false,\"VC\":false},\"outcomes\":{\"O4\":\"H\",\"O3\":null,\"O1\":null},\"biggestBet\":true,\"effort\":\"Low\",\"notes\":\"Bought / Watched / NB Buyer signals. Low Effort.\",\"customerHypothesis\":\"\"},{\"id\":6,\"title\":\"Non-Habitual: Live Deals + $1 Dollar Start Discovery\",\"hypothesis\":\"<b>Customer Hypothesis</b><br>If we prominently surface personalized Live deals by combining deal signals with low-CCU room opportunities, tailored to each buyer’s category affinity and price propensity, deal-motivated non-habitual buyers will enter Live experiences at higher rates.<div><br><b>Success Metrics</b><br>↑ Module CTR<br>↑ Quality Views<br>↑ Live Entry Rate<br>↑ Watch Duration<br>Experience Guardrails<br><br>Only surface deal experiences when buyer relevance and deal quality meet the defined threshold.</div><div><br><b>Variation 1 – Deals Discovery</b> <b>Experience</b><br><br></div><div>Experience: Surface a dedicated Live Deals module.<br><br></div><div><b>Algorithm Updates</b><br>Combine:<br>Deal signals<br>Low-CCU room opportunities<br>Category affinity<br>Price propensity<br><br></div><div><b>Experience&nbsp;</b><span style=\\\"font-weight: bold; font-family: -apple-system, BlinkMacSystemFont, &quot;SF Pro Display&quot;, &quot;SF Pro Text&quot;, &quot;Helvetica Neue&quot;, Arial, sans-serif;\\\">Principle: </span><span style=\\\"font-family: -apple-system, BlinkMacSystemFont, &quot;SF Pro Display&quot;, &quot;SF Pro Text&quot;, &quot;Helvetica Neue&quot;, Arial, sans-serif;\\\">Context First</span></div><div><b><span style=\\\"font-family: -apple-system, BlinkMacSystemFont, &quot;SF Pro Display&quot;, &quot;SF Pro Text&quot;, &quot;Helvetica Neue&quot;, Arial, sans-serif;\\\"><br></span></b></div><div><b>Variation 2 – Dollar Start Discovery<br>Experience</b><br><br>Surface personalized $1 Start and low-starting-bid Live events.<br><b><br></b></div><div><b>Algorithm Updates</b><br>Rank based on:<br>Category affinity<br>Price propensity<br>Deal relevance<br><br></div><div><b>Experience Principle:</b> Low Cost of Trial</div>\",\"theme\":\"Deals\",\"surfaces\":{\"HP\":true,\"Search\":true,\"Live Hub\":true,\"VC\":false},\"outcomes\":{\"O4\":\"H\"},\"biggestBet\":true,\"effort\":\"Medium\",\"notes\":\"Hook and Low Effort. ASP Low. Price Propensity at the Buyer Segment Capability: Dynamic\",\"customerHypothesis\":\"\"},{\"id\":16,\"title\":\"All Buyers: Live Branding Update\",\"hypothesis\":\"Customer Hypothesis<br>If we improve the recognizability of eBay Live entry surfaces through clearer branding and visual identity, buyers will discover and enter Live at higher rates.<br><br>Success Metrics<br>↑ Homepage Live CTR<br>↑ Live Entry Rate<br>↑ Quality Views<br><br>Experience Guardrails<br>No degradation in Homepage engagement or Core Commerce metrics.<br><br>Variation 1 – Homepage Navigation Chip<br>Experience<br>Replace the existing eBay Live chip branding with the new Live Pulse visual identity.<br>Experience Principle<br>Explainability<br><br>Variation 2 – Bottom Navigation Icon<br>Experience<br>Replace the existing Live bottom navigation icon with the new Live Pulse visual identity.<br>Experience Principle<br>Explainability\",\"theme\":\"Brand\",\"surfaces\":{\"HP\":true,\"Search\":false,\"Live Hub\":false,\"VC\":false},\"outcomes\":{\"O1\":\"H\"},\"biggestBet\":true,\"effort\":\"High\",\"notes\":\"Cross-surface brand change. Homepage breakage risk — must pair with module experience updates.\"},{\"id\":7,\"title\":\"All Buyers: Context Aware Ranking in Vertical Chaining\",\"hypothesis\":\"<div><b>Customer Hypothesis</b><br>If we rank Live events in Vertical Chaining using buyer context and session intent, buyers will discover more relevant Live events and engage with Live at higher rates.<br>Success Metrics<br><br>↑ Quality Views<br>↑ Live Entry Rate<br>↑ CTR<br>↑ Watch Duration<br>Experience Guardrails<br><br>Surface only Live events that meet the defined relevance threshold.<br><br></div><div><b>Algorithm Updates</b><br>Enhance Vertical Chaining ranking using:<br>Seller affinity<br>Category affinity<br>Entry context<br>Session intent (“What am I doing in this session?”)<br>Knowledge Graph signals<br>Experience Tests<br><br>Test the optimal ranking position of the most relevant Live event within the Vertical Chaining feed (e.g., 4th vs. 5th Live event).<br><br></div><div><b>Experience Principles:&nbsp;</b></div><div>Context First<br>Relevance Over Volume</div>\",\"theme\":\"Category\",\"surfaces\":{\"HP\":false,\"Search\":false,\"Live Hub\":false,\"VC\":true},\"outcomes\":{\"O5\":\"H\"},\"biggestBet\":true,\"effort\":\"High\",\"notes\":\"Guardrail: watch Quality Views and Exits relative to Scroll Depth.\",\"customerHypothesis\":\"\"},{\"id\":1,\"title\":\"Live Unaware: Category Prominence\",\"hypothesis\":\"<b>Customer Hypothesis</b><br>If we increase the prominence of relevant Live categories for Live Unaware buyers, while only surfacing the experience when the buyer-category relevance score meets a defined confidence threshold, buyers will discover relevant Live content faster, increasing first-time engagement.<br>Success Metrics<br><br>↑ First-Time Quality Views<br>↑ Module CTR<br>↑ New-to-Live Viewers<br>↓ Module Bounce Rate<br>Experience Guardrail<br><br>Display the Category module only when the buyer-category relevance score meets the predefined confidence threshold; otherwise, suppress the module.<div><br><b>Test 1 – Placement Optimization</b><br>Test the optimal homepage placement of the Category module for eligible Live Unaware buyers.<br><br></div><div><b>Test 2 – Experience Optimization</b><br>Test different category module experiences (titles, visual treatment, category ordering, and information hierarchy) to maximize first-time engagement.</div><div><br></div>\",\"theme\":\"Category\",\"surfaces\":{\"HP\":true,\"Search\":true,\"Live Hub\":true,\"VC\":false},\"outcomes\":{\"O1\":\"H\"},\"biggestBet\":true,\"effort\":\"Medium\",\"notes\":\"For You - Segmentation Surface Rate and CTA by Segment Surface Rate vs Relevance JB: Define the Audience\",\"customerHypothesis\":\"\"},{\"id\":2,\"title\":\"Live Unaware: Trusted Seller Discovery\",\"hypothesis\":\"<b>Customer Hypothesis</b><br>If we surface trusted, proven sellers to Live Unaware buyers during their first Live discovery experience, buyers will be more likely to enter high-quality streams, improving first-session quality and increasing continued engagement.<div><br><b>Variation 1:&nbsp;</b>Surface eBay Top Rated Sellers (definition: sellers who meet eBay’s Top Rated Seller criteria).<br><br><div><b>Variation 2:</b> Surface sellers with ≥99% positive feedback rating.<br>Success Metrics<br><br>↑ Module CTR<br>↑ Quality Views<br>↓ Module Bounce Rate<br>↑ First-Time Live Viewers<br>Experience Guardrail<br><br>Only surface sellers that meet the predefined trusted seller criteria.</div></div>\",\"theme\":\"Seller\",\"surfaces\":{\"HP\":true,\"Search\":true,\"Live Hub\":true,\"VC\":false},\"outcomes\":{\"O1\":\"H\"},\"biggestBet\":true,\"effort\":\"Medium\",\"notes\":\"JB: Define the Audience\",\"customerHypothesis\":\"\"},{\"id\":4,\"title\":\"All Buyers: Live Event Discovery in Search\",\"hypothesis\":\"<b>Customer Hypothesis</b><br>If we improve the relevance and prominence of Live events in Search, buyers will discover and enter Live experiences at higher rates.<br><br><br><b>Assumption: </b>Providing a back button from a Live event back to Search will reduce navigation friction and encourage buyers to continue exploring additional Live events.<div><br><b>Success Metrics</b><br>↑ Live Event CTR<br>↑ Quality Views<br>↑ Search-to-Live Conversion<br>Experience Guardrails<br><br>Surface Live events only when they meet the defined query relevance threshold.<br><br><b>Variation 1 – Ranking Optimization</b><br><b>Algorithm:</b> Uprank Live events based on query intent, buyer segment, and Live relevance.<br><br><b>Experience Principle:</b> Context First<br><br><br><b>Variation 2 – Query Relevance Optimization</b><br><br><br><b>Algorithm:</b> Improve retrieval and ranking for broad and narrow queries across Habitual and Non-Habitual buyers.<br><br></div><div><b>Experience Principle</b><br>Relevance Over Volume<br><br><br><b>Variation 3 – Search Experience</b><br>Experience: Improve Live copy, badges, placement, and add a back button from Live events to Search.<br><br><b>Experience Principle: </b>Explainability<br><br><b>Variation 4 – Habitual &amp; Live Engaged Upranking</b><br><br><b>Algorithm</b><br>Uprank Live events for Habitual and Live Engaged buyers from Position 5 to a more prominent Search position.<br><br>Experience Principle<br>Low Cost of Trial<br><br><b>Product Discovery (Post-Q3)</b><br>1. Ingest Live events into Search alongside item listings.<br>2. Compare Live event relevance against item listings in unified Search ranking.<br>3. Define the optimal ranking strategy for Live events within Search.</div>\",\"theme\":\"Awareness\",\"surfaces\":{\"HP\":false,\"Search\":true,\"Live Hub\":false,\"VC\":false},\"outcomes\":{\"O1\":\"H\",\"O4\":\"H\"},\"biggestBet\":true,\"effort\":\"High\",\"notes\":\"Noted as Huge Impact and high effort\",\"customerHypothesis\":\"\"},{\"id\":5,\"title\":\"All Buyers: Improve “For You” Discovery through Similar \\\"Like Buyer Signals\",\"hypothesis\":\"<b>Customer Hypothesis</b><br>If we improve the ranking algorithms powering the existing For You module using similar buyer (“look-alike”) signals, buyers will discover more relevant Live events, increasing surface rate, engagement, and relevance.<br><br><div><b>Success Metrics</b><br>↑ Surface Rate<br>↑ Module CTR<br>↑ Quality Views<br>↑ Watch Duration<br>Experience Guardrails<br><br>Only surface events when they meet the defined relevance threshold.<br>Maintain recommendation diversity.<br><br><div><b>Variation 1 – Similar Buyer</b> <b>Algorithm</b><br><br></div><div><b>Algorithm Updates</b><br>Tune the existing For You ranking using similar buyer (look-alike) signals.<br>Optimize for Surface Rate and Quality Views.</div><div><br><b>Experience Principle: </b>Context First</div><div><br><b>Variation 2 – Ranking Signal Optimization</b><br><br></div><div><b>Algorithm Updates</b>: Test and optimize the weighting of ranking signals (e.g., buyer affinity, engagement, category interest, recency) to improve recommendation relevance.</div></div>\",\"theme\":\"Category\",\"surfaces\":{\"HP\":true,\"Search\":false,\"Live Hub\":true,\"VC\":false},\"outcomes\":{\"O4\":\"H\"},\"biggestBet\":true,\"effort\":\"Medium\",\"notes\":\"\",\"customerHypothesis\":\"\"},{\"id\":8,\"title\":\"Discovery - Social Proof Badging on Event Tile - Seller feedback Rating\",\"hypothesis\":\"If we show signals from Rating, Social Medium Instagram - Followers, buyers will perceive events as more trustworthy, increasing tile CTR. Can help with Cold Start\",\"theme\":\"Seller\",\"surfaces\":{\"HP\":true,\"Search\":true,\"Live Hub\":true,\"VC\":true},\"outcomes\":{\"O4\":\"H\",\"O1\":\"H\"},\"biggestBet\":true,\"effort\":\"Low\",\"notes\":\"\",\"customerHypothesis\":\"\"},{\"id\":9,\"title\":\"Habitual: \\\"Fresh Streams\\\" Position Test\",\"hypothesis\":\"If we insert Fresh Streams between Preferred Seller and For You on HP, habitual buyers will discover new sellers without losing relevance, improving CTR and watch duration.\",\"theme\":\"Reactivation\",\"surfaces\":{\"HP\":true,\"Search\":false,\"Live Hub\":false,\"VC\":false},\"outcomes\":{\"O3\":\"M\"},\"biggestBet\":false,\"effort\":\"Low\",\"notes\":\"P1 Preferred Seller → Fresh Streams → P2 For You.\",\"customerHypothesis\":\"\"},{\"id\":10,\"title\":\"Non-Habitual: Saved Seller Goes LIVE Notification\",\"hypothesis\":\"If we notify non-habitual buyers the moment a saved seller goes live, it creates a high-relevance pull to return at the right time.\",\"theme\":\"Frequency\",\"surfaces\":{\"HP\":true,\"Search\":false,\"Live Hub\":false,\"VC\":false},\"outcomes\":{\"O4\":\"M\"},\"biggestBet\":false,\"effort\":\"High\",\"notes\":\"Effort High\",\"customerHypothesis\":\"\"},{\"id\":12,\"title\":\"Lead by Deals and Category Info on Event Tile\",\"hypothesis\":\"If we show category info on event tile, buyers will enter at higher rates.\",\"theme\":\"Category + Deals\",\"surfaces\":{\"HP\":true,\"Search\":false,\"Live Hub\":true,\"VC\":false},\"outcomes\":{\"O1\":\"M\",\"O4\":\"M\",\"O3\":null,\"O5\":null},\"biggestBet\":false,\"effort\":\"Low\",\"notes\":\"\",\"customerHypothesis\":\"\"},{\"id\":11,\"title\":\"Vertical feed\",\"hypothesis\":\"Move homepage toward a vertical scrolling feed experience. Parallel test, gated on Live Hub incrementality results.\",\"theme\":\"Reactivation\",\"surfaces\":{\"HP\":true,\"Search\":false,\"Live Hub\":false,\"VC\":false},\"outcomes\":{\"O3\":\"M\",\"O4\":\"M\",\"O1\":null},\"biggestBet\":false,\"effort\":\"Medium\",\"notes\":\"Habitual segment already deprioritized. Needs buy-in before scoping.\",\"customerHypothesis\":\"\"},{\"id\":13,\"title\":\"Seller Identity at Top of Event Tile Whatnot Style\",\"hypothesis\":\"If we display seller name and identity prominently on the tile, buyers who recognize the seller will click in at higher rates.\",\"theme\":\"Seller\",\"surfaces\":{\"HP\":true,\"Search\":true,\"Live Hub\":true,\"VC\":true},\"outcomes\":{\"O4\":\"M\",\"O1\":\"M\",\"O3\":\"M\"},\"biggestBet\":false,\"effort\":\"Low\",\"notes\":\"\",\"customerHypothesis\":\"\"},{\"id\":14,\"title\":\"Explain Why Value Prop, You Like, Interest, Bought Before : titles/subtitles (New)\",\"hypothesis\":\"Ongoing algo improvement (MLR v6/v7) to personalize module titles and subtitles on top of existing modules.\",\"theme\":\"Algo\",\"surfaces\":{\"HP\":true,\"Search\":false,\"Live Hub\":false,\"VC\":false},\"outcomes\":{\"O1\":\"L\",\"O4\":\"L\"},\"biggestBet\":false,\"effort\":\"Low\",\"notes\":\"Effort Unknown\",\"customerHypothesis\":\"\"},{\"id\":15,\"title\":\"Discovery Arbitration Engine - Dynamically place modules on Home page based on buyer affinity + many other signals\",\"hypothesis\":\"If we [do X], buyers will [outcome].\",\"theme\":\"Theme\",\"surfaces\":{\"HP\":false,\"Search\":false,\"Live Hub\":false,\"VC\":false},\"outcomes\":{\"O1\":\"H\",\"O4\":\"H\"},\"biggestBet\":true,\"effort\":\"High\",\"notes\":\"\",\"customerHypothesis\":\"\"}]");
+  localStorage.removeItem('q3-principles-v1');
+  localStorage.removeItem('q3-goals-v1');
+  localStorage.removeItem('q3-metrics-v1');
+  if (!existing) localStorage.setItem('q3-comments-v1', "{}");
+})();
+</script>
+
+<div class="page-header">
+  <div class="hdr-left">
+    <h1>Q3 Buyer Discovery Roadmap</h1>
+    <p>eBay Live · Discovery Team</p>
+  </div>
+  <div class="hdr-right">
+    <button class="btn btn-dark" onclick="addRow()">+ Add Initiative</button>
+    <button class="btn btn-blue" onclick="saveChanges()">Save Changes</button>
+    <button class="btn btn-dark" onclick="downloadForGitHub()" title="Download file with your data baked in, ready to upload to GitHub">⬇ Download for GitHub</button>
+  </div>
+</div>
+
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab-btn" data-tab="principles" onclick="switchTab('principles')">Experience Principles</button>
+    <button class="tab-btn" data-tab="goals" onclick="switchTab('goals')">Goals by Segment</button>
+    <button class="tab-btn tab-active" data-tab="roadmap" onclick="switchTab('roadmap')">Roadmap</button>
+    <div class="tab-nav-right">
+      <button class="comments-nav-btn" id="comments-nav-btn" onclick="showAllComments()">💬 Comments</button>
+      <button class="share-btn" onclick="copyLink()">🔗 Copy Link</button>
+    </div>
+  </div>
+</nav>
+
+<div class="main">
+  <div id="tab-principles" class="tab-section">
+    <div class="principles-wrap">
+      <div class="principles-section-hdr">Experience Principles</div>
+      <div class="principles-grid" id="principles-grid">
+    <div class="principle-card">
+      <div class="principle-num">1</div>
+      <div class="principle-title" contenteditable="true" data-pid="p1" data-pf="title">Earn the Tap Before You Ask for It</div>
+      <div class="principle-desc" contenteditable="true" data-pid="p1" data-pf="desc">I opened eBay for something else. Show me why this stream is worth stopping for before you ask me to tap in.</div>
+      <button class="comment-trigger" data-ca="princ-p1" onclick="toggleCommentThread('princ-p1')">💬 Comment</button>
+      <div class="comment-thread" id="ct-princ-p1"></div>
+    </div>
+  
+    <div class="principle-card">
+      <div class="principle-num">2</div>
+      <div class="principle-title" contenteditable="true" data-pid="p2" data-pf="title">Make the Unknown Feel Known</div>
+      <div class="principle-desc" contenteditable="true" data-pid="p2" data-pf="desc">I don't join what I don't recognize. Give me a seller name, a category, a price point. Then I'll decide.</div>
+      <button class="comment-trigger" data-ca="princ-p2" onclick="toggleCommentThread('princ-p2')">💬 Comment</button>
+      <div class="comment-thread" id="ct-princ-p2"></div>
+    </div>
+  
+    <div class="principle-card">
+      <div class="principle-num">3</div>
+      <div class="principle-title" contenteditable="true" data-pid="p3" data-pf="title">Make Trying Feel Free</div>
+      <div class="principle-desc" contenteditable="true" data-pid="p3" data-pf="desc">I'll tap in if I know I can leave. Protect my place in the app and I'll explore. Make it feel like a trap and I won't come back.</div>
+      <button class="comment-trigger" data-ca="princ-p3" onclick="toggleCommentThread('princ-p3')">💬 Comment</button>
+      <div class="comment-thread" id="ct-princ-p3"></div>
+    </div>
+  
+    <div class="principle-card">
+      <div class="principle-num">4</div>
+      <div class="principle-title" contenteditable="true" data-pid="p4" data-pf="title">Tell Me Why</div>
+      <div class="principle-desc" contenteditable="true" data-pid="p4" data-pf="desc">"Recommended for you" means nothing. "Because you watched sneakers last week" means I'll click. Earn my trust by showing your reasoning.</div>
+      <button class="comment-trigger" data-ca="princ-p4" onclick="toggleCommentThread('princ-p4')">💬 Comment</button>
+      <div class="comment-thread" id="ct-princ-p4"></div>
+    </div>
+  
+    <div class="principle-card">
+      <div class="principle-num">5</div>
+      <div class="principle-title" contenteditable="true" data-pid="p5" data-pf="title">Different Buyers, Different Jobs</div>
+      <div class="principle-desc" contenteditable="true" data-pid="p5" data-pf="desc">I'm not here for the same reason every day. Show me what fits where I am right now, not what works for someone else.</div>
+      <button class="comment-trigger" data-ca="princ-p5" onclick="toggleCommentThread('princ-p5')">💬 Comment</button>
+      <div class="comment-thread" id="ct-princ-p5"></div>
+    </div>
+  
+    <div class="principle-card">
+      <div class="principle-num">6</div>
+      <div class="principle-title" contenteditable="true" data-pid="p6" data-pf="title">One Good Stream Should Lead to Another</div>
+      <div class="principle-desc" contenteditable="true" data-pid="p6" data-pf="desc">When I leave a stream, I'm still in the mood. Don't drop me. Show me what's next.</div>
+      <button class="comment-trigger" data-ca="princ-p6" onclick="toggleCommentThread('princ-p6')">💬 Comment</button>
+      <div class="comment-thread" id="ct-princ-p6"></div>
+    </div>
+  
+    <div class="principle-card">
+      <div class="principle-num">7</div>
+      <div class="principle-title" contenteditable="true" data-pid="p7" data-pf="title">Build for the World from Day One</div>
+      <div class="principle-desc" contenteditable="true" data-pid="p7" data-pf="desc">I should get the same quality of discovery whether I'm in the US or the UK. Don't make my market an afterthought.</div>
+      <button class="comment-trigger" data-ca="princ-p7" onclick="toggleCommentThread('princ-p7')">💬 Comment</button>
+      <div class="comment-thread" id="ct-princ-p7"></div>
+    </div>
+  
+    <div class="principle-card">
+      <div class="principle-num">8</div>
+      <div class="principle-title" contenteditable="true" data-pid="p8" data-pf="title">Meet Me on Every Device</div>
+      <div class="principle-desc" contenteditable="true" data-pid="p8" data-pf="desc">I found Live on my phone. Don't give me a worse experience because I switched to my laptop. The promise should travel with me.</div>
+      <button class="comment-trigger" data-ca="princ-p8" onclick="toggleCommentThread('princ-p8')">💬 Comment</button>
+      <div class="comment-thread" id="ct-princ-p8"></div>
+    </div>
+  </div>
+    </div>
+  </div>
+
+  <div id="tab-goals" class="tab-section">
+    <div class="metrics-wrap" id="metrics-wrap">
+      <div class="seg-block">
+        <div class="seg-header" style="border-left-color:#1d1d1f">
+          <span class="seg-name">Habitual</span>
+          
+          <span class="seg-outcome" style="background:#eef2ff;color:#3730a3;border-color:#c7d2fe">Deepen Engagement</span>
+          <button class="comment-trigger" style="margin-left:12px;margin-top:0" data-ca="seg-Habitual" onclick="toggleCommentThread('seg-Habitual')">💬 Comment</button>
+        </div>
+        <div class="comment-thread" id="ct-seg-Habitual" style="padding:10px 20px"></div>
+        <table class="metrics-tbl">
+          <colgroup>
+            <col style="width:28%"><col style="width:20%"><col style="width:7%">
+            <col style="width:27%"><col style="width:9%"><col style="width:9%">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Metric<div class="resize-handle"></div></th><th>Desired Outcome<div class="resize-handle"></div></th><th>Level<div class="resize-handle"></div></th>
+              <th>Definition<div class="resize-handle"></div></th><th>Baseline<div class="resize-handle"></div></th><th>Goal<div class="resize-handle"></div></th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr class="">
+                <td>
+                  <div class="metric-name">Watch Duration per User-Week</div>
+                </td>
+                <td>
+                  <span class="outcome-pill" style="background:#eef2ff;color:#3730a3;border-color:#c7d2fe">
+                    Deepen Engagement
+                  </span>
+                </td>
+                <td><span class="lvl-badge lvl-L1">L1</span></td>
+                <td><span class="metric-def-txt">Total watch duration ÷ segment viewers per week</span></td>
+                <td><div class="metric-editable" contenteditable="true" data-mid="m1" data-mf="baseline"></div></td>
+                <td><div class="metric-editable goal-editable" contenteditable="true" data-mid="m1" data-mf="goal"></div></td>
+              </tr>
+              <tr class="">
+                <td>
+                  <div class="metric-name">Watch Sessions per User-Week</div>
+                </td>
+                <td>
+                  <span class="outcome-pill" style="background:#eef2ff;color:#3730a3;border-color:#c7d2fe">
+                    Deepen Engagement
+                  </span>
+                </td>
+                <td><span class="lvl-badge lvl-L1">L1</span></td>
+                <td><span class="metric-def-txt">Total QV watch sessions ÷ segment viewers per week</span></td>
+                <td><div class="metric-editable" contenteditable="true" data-mid="m2" data-mf="baseline"></div></td>
+                <td><div class="metric-editable goal-editable" contenteditable="true" data-mid="m2" data-mf="goal"></div></td>
+              </tr>
+              <tr class="">
+                <td>
+                  <div class="metric-name">Watch Rate</div>
+                </td>
+                <td>
+                  <span class="outcome-pill" style="background:#eef2ff;color:#3730a3;border-color:#c7d2fe">
+                    Deepen Engagement
+                  </span>
+                </td>
+                <td><span class="lvl-badge lvl-L2">L2</span></td>
+                <td><span class="metric-def-txt">Total QV watch sessions ÷ segment visits per week</span></td>
+                <td><div class="metric-editable" contenteditable="true" data-mid="m3" data-mf="baseline"></div></td>
+                <td><div class="metric-editable goal-editable" contenteditable="true" data-mid="m3" data-mf="goal"></div></td>
+              </tr>
+              <tr class="row-deprio">
+                <td>
+                  <div class="metric-name">QV Hosts Watched per User-Week</div>
+                </td>
+                <td>
+                  <span class="outcome-pill" style="background:#faf5ff;color:#6b21a8;border-color:#e9d5ff">
+                    Broaden Engagement
+                  </span>
+                </td>
+                <td></td>
+                <td><span class="metric-def-txt">Total QV hosts watched ÷ segment viewers per week</span></td>
+                <td><div class="metric-editable" contenteditable="true" data-mid="m4" data-mf="baseline"></div></td>
+                <td><div class="metric-editable goal-editable" contenteditable="true" data-mid="m4" data-mf="goal"></div></td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="seg-block">
+        <div class="seg-header" style="border-left-color:#0071e3">
+          <span class="seg-name">Live Engaged</span>
+          
+          <span class="seg-outcome" style="background:#eef2ff;color:#3730a3;border-color:#c7d2fe">Deepen Engagement</span>
+          <button class="comment-trigger" style="margin-left:12px;margin-top:0" data-ca="seg-Live Engaged" onclick="toggleCommentThread('seg-Live Engaged')">💬 Comment</button>
+        </div>
+        <div class="comment-thread" id="ct-seg-Live Engaged" style="padding:10px 20px"></div>
+        <table class="metrics-tbl">
+          <colgroup>
+            <col style="width:28%"><col style="width:20%"><col style="width:7%">
+            <col style="width:27%"><col style="width:9%"><col style="width:9%">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Metric<div class="resize-handle"></div></th><th>Desired Outcome<div class="resize-handle"></div></th><th>Level<div class="resize-handle"></div></th>
+              <th>Definition<div class="resize-handle"></div></th><th>Baseline<div class="resize-handle"></div></th><th>Goal<div class="resize-handle"></div></th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr class="">
+                <td>
+                  <div class="metric-name">Watch Duration per User-Week</div>
+                </td>
+                <td>
+                  <span class="outcome-pill" style="background:#eef2ff;color:#3730a3;border-color:#c7d2fe">
+                    Deepen Engagement
+                  </span>
+                </td>
+                <td><span class="lvl-badge lvl-L1">L1</span></td>
+                <td><span class="metric-def-txt">Total watch duration ÷ segment viewers per week</span></td>
+                <td><div class="metric-editable" contenteditable="true" data-mid="m5" data-mf="baseline"></div></td>
+                <td><div class="metric-editable goal-editable" contenteditable="true" data-mid="m5" data-mf="goal"></div></td>
+              </tr>
+              <tr class="">
+                <td>
+                  <div class="metric-name">Watch Sessions per User-Week</div>
+                </td>
+                <td>
+                  <span class="outcome-pill" style="background:#eef2ff;color:#3730a3;border-color:#c7d2fe">
+                    Deepen Engagement
+                  </span>
+                </td>
+                <td><span class="lvl-badge lvl-L1">L1</span></td>
+                <td><span class="metric-def-txt">Total watch sessions ÷ segment viewers per week</span></td>
+                <td><div class="metric-editable" contenteditable="true" data-mid="m6" data-mf="baseline"></div></td>
+                <td><div class="metric-editable goal-editable" contenteditable="true" data-mid="m6" data-mf="goal"></div></td>
+              </tr>
+              <tr class="">
+                <td>
+                  <div class="metric-name">Watch Rate</div>
+                </td>
+                <td>
+                  <span class="outcome-pill" style="background:#eef2ff;color:#3730a3;border-color:#c7d2fe">
+                    Deepen Engagement
+                  </span>
+                </td>
+                <td><span class="lvl-badge lvl-L2">L2</span></td>
+                <td><span class="metric-def-txt">Total QV watch sessions ÷ segment visits per week</span></td>
+                <td><div class="metric-editable" contenteditable="true" data-mid="m7" data-mf="baseline"></div></td>
+                <td><div class="metric-editable goal-editable" contenteditable="true" data-mid="m7" data-mf="goal"></div></td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="seg-block">
+        <div class="seg-header" style="border-left-color:#c2410c">
+          <span class="seg-name">Live Aware (lapsed)</span>
+          
+          <span class="seg-outcome" style="background:#fff7ed;color:#9a3412;border-color:#fed7aa">Reactivate</span>
+          <button class="comment-trigger" style="margin-left:12px;margin-top:0" data-ca="seg-Live Aware (lapsed)" onclick="toggleCommentThread('seg-Live Aware (lapsed)')">💬 Comment</button>
+        </div>
+        <div class="comment-thread" id="ct-seg-Live Aware (lapsed)" style="padding:10px 20px"></div>
+        <table class="metrics-tbl">
+          <colgroup>
+            <col style="width:28%"><col style="width:20%"><col style="width:7%">
+            <col style="width:27%"><col style="width:9%"><col style="width:9%">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Metric<div class="resize-handle"></div></th><th>Desired Outcome<div class="resize-handle"></div></th><th>Level<div class="resize-handle"></div></th>
+              <th>Definition<div class="resize-handle"></div></th><th>Baseline<div class="resize-handle"></div></th><th>Goal<div class="resize-handle"></div></th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr class="">
+                <td>
+                  <div class="metric-name">Watch Rate</div>
+                </td>
+                <td>
+                  <span class="outcome-pill" style="background:#fff7ed;color:#9a3412;border-color:#fed7aa">
+                    Reactivate
+                  </span>
+                </td>
+                <td><span class="lvl-badge lvl-L1">L1</span></td>
+                <td><span class="metric-def-txt">Total QV watch sessions ÷ segment visits per week</span></td>
+                <td><div class="metric-editable" contenteditable="true" data-mid="m8" data-mf="baseline"></div></td>
+                <td><div class="metric-editable goal-editable" contenteditable="true" data-mid="m8" data-mf="goal"></div></td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="seg-block">
+        <div class="seg-header" style="border-left-color:#16a34a">
+          <span class="seg-name">Never Tried Live</span>
+          <span class="seg-subseg">Should Love Live</span>
+          <span class="seg-outcome" style="background:#f0fdf4;color:#15803d;border-color:#86efac">Activate</span>
+          <button class="comment-trigger" style="margin-left:12px;margin-top:0" data-ca="seg-Never Tried Live" onclick="toggleCommentThread('seg-Never Tried Live')">💬 Comment</button>
+        </div>
+        <div class="comment-thread" id="ct-seg-Never Tried Live" style="padding:10px 20px"></div>
+        <table class="metrics-tbl">
+          <colgroup>
+            <col style="width:28%"><col style="width:20%"><col style="width:7%">
+            <col style="width:27%"><col style="width:9%"><col style="width:9%">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Metric<div class="resize-handle"></div></th><th>Desired Outcome<div class="resize-handle"></div></th><th>Level<div class="resize-handle"></div></th>
+              <th>Definition<div class="resize-handle"></div></th><th>Baseline<div class="resize-handle"></div></th><th>Goal<div class="resize-handle"></div></th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr class="">
+                <td>
+                  <div class="metric-name">Trial Rate</div>
+                </td>
+                <td>
+                  <span class="outcome-pill" style="background:#f0fdf4;color:#15803d;border-color:#86efac">
+                    Activate
+                  </span>
+                </td>
+                <td><span class="lvl-badge lvl-L1">L1</span></td>
+                <td><span class="metric-def-txt">Total first-time QV sessions ÷ segment sessions per week</span></td>
+                <td><div class="metric-editable" contenteditable="true" data-mid="m9" data-mf="baseline"></div></td>
+                <td><div class="metric-editable goal-editable" contenteditable="true" data-mid="m9" data-mf="goal"></div></td>
+              </tr>
+          </tbody>
+        </table>
+      </div></div>
+  </div>
+
+  <div id="tab-roadmap" class="tab-section tab-visible">
+    <div class="table-wrap" style="margin:28px 40px; border-radius:12px;">
+      <table>
+        <colgroup><col><col><col><col><col><col><col></colgroup>
+        <thead>
+          <tr>
+            <th style="text-align:center;padding:10px 8px">#<div class="resize-handle"></div></th>
+            <th>Initiative + Hypothesis<div class="resize-handle"></div></th>
+            <th>Theme<div class="resize-handle"></div></th>
+            <th>Surface<div class="resize-handle"></div></th>
+            <th>Outcome<div class="resize-handle"></div></th>
+            <th>Estimated Impact<div class="resize-handle"></div></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+    <tr data-row-id="3">
+      <td class="rank-cell">
+        <div class="rank-num">1</div>
+      </td>
+      <td>
+        <div class="row-title" contenteditable="true" data-id="3" data-field="title">Non-Habitual (Live Engaged): Preferred Seller Discovery</div>
+        <div class="row-hyp" contenteditable="true" data-id="3" data-field="hypothesis"><b>Customer Hypothesis</b><br>If we prominently surface sellers that buyers already know through prior purchases, watch history, follows, or other high-confidence affinity signals, non-habitual buyers will reconnect with familiar sellers more easily, increasing engagement and accelerating habit formation.<br><br><br><b>Success Metrics</b><br>↑ Quality Views<br>↑ Module CTR<br>↑ Repeat Viewer Rate<br>↑ Watch Duration<br>↑ Habit Formation Rate<br><br><br><b>Experience Guardrail</b><br>Only surface sellers when a qualifying buyer affinity signal exists; otherwise, suppress the Preferred Seller experience.<br><br><b>Variation 1 – Module Experience<br>Experience</b><br><br>Surface a dedicated Preferred Seller module.<br><br><br><b>Algorithm Updates</b><br>Rank sellers using buyer affinity signals:<br>Followed sellers<br>Previously purchased from<br>Previously watched (≥ X minutes in the last Y days)<br>Additional high-confidence buyer affinity signals<br><br><b>Variation 2 – In-Tile Experience<br>Experience</b><br>Increase seller identity prominence within existing event tiles (Whatnot-style).<br><b>Experience Tests</b><br>1) Seller identity at the top of the event tile<br>2) Test&nbsp;Stronger seller branding and visual hierarchy</div>
+        
+        <button class="add-image-btn" onclick="addImage(3)">📎 Add Screenshot</button>
+        <button class="comment-trigger" data-ca="row-3" onclick="toggleCommentThread('row-3')">💬 Comment</button>
+        <div class="comment-thread" id="ct-row-3"></div>
+      </td>
+      <td>
+        <span class="theme-tag" contenteditable="true" data-id="3" data-field="theme">Reactivation</span>
+      </td>
+      <td><div class="chip-row"><span class="chip surf-on" onclick="toggleSurface(3,'HP',this)">HP</span><span class="chip surf-off" onclick="toggleSurface(3,'Search',this)">Search</span><span class="chip surf-off" onclick="toggleSurface(3,'Live Hub',this)">Live Hub</span><span class="chip surf-off" onclick="toggleSurface(3,'VC',this)">VC</span></div></td>
+      <td><div class="chip-row"><span class="chip out-chip out-on O1" onclick="toggleOutcome(3,'O1',this)">
+      <span class="out-code">O1</span><span class="out-lbl"> Increase New-to-Live Users</span>
+    </span><span class="chip out-chip out-on O3" onclick="toggleOutcome(3,'O3',this)">
+      <span class="out-code">O3</span><span class="out-lbl"> Retain Habitual Users</span>
+    </span><span class="chip out-chip out-on O4" onclick="toggleOutcome(3,'O4',this)">
+      <span class="out-code">O4</span><span class="out-lbl"> Convert Non-Habitual</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(3,'O5',this)">
+      <span class="out-code">O5</span><span class="out-lbl"> Grow Demand Categories</span>
+    </span></div></td>
+      <td class="impact-td">
+    <div class="impact-col">
+      <div class="bb-badge bb-on">★ Biggest Bet</div>
+      <div class="out-impact-rows">
+    <div class="out-impact-row">
+      <span class="out-imp-label lO4">O4</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(3,'O4','L',this)">L</button><button class="lmh-btn" onclick="setImpact(3,'O4','M',this)">M</button><button class="lmh-btn sel-H" onclick="setImpact(3,'O4','H',this)">H</button>
+      </div>
+    </div>
+  
+    <div class="out-impact-row">
+      <span class="out-imp-label lO3">O3</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(3,'O3','L',this)">L</button><button class="lmh-btn" onclick="setImpact(3,'O3','M',this)">M</button><button class="lmh-btn" onclick="setImpact(3,'O3','H',this)">H</button>
+      </div>
+    </div>
+  
+    <div class="out-impact-row">
+      <span class="out-imp-label lO1">O1</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(3,'O1','L',this)">L</button><button class="lmh-btn" onclick="setImpact(3,'O1','M',this)">M</button><button class="lmh-btn" onclick="setImpact(3,'O1','H',this)">H</button>
+      </div>
+    </div>
+  </div>
+      <div class="effort-line">
+        <select class="effort-sel" onchange="setEffort(3,this.value)"><option selected="">Low</option><option>Medium</option><option>High</option></select>
+        <span class="effort-label">effort</span>
+      </div>
+      <div class="notes-field" contenteditable="true" data-id="3" data-field="notes">Bought / Watched / NB Buyer signals. Low Effort.</div>
+    </div>
+  </td>
+      <td class="actions-td">
+        <div class="row-actions">
+          <button class="move-btn" onclick="moveUp(3)" disabled="" title="Move up">▲</button>
+          <button class="move-btn" onclick="moveDown(3)" title="Move down">▼</button>
+          <button class="del-btn" onclick="deleteRow(3)" title="Remove">✕</button>
+        </div>
+      </td>
+    </tr>
+  
+    <tr data-row-id="6">
+      <td class="rank-cell">
+        <div class="rank-num">2</div>
+      </td>
+      <td>
+        <div class="row-title" contenteditable="true" data-id="6" data-field="title">Non-Habitual: Live Deals + $1 Dollar Start Discovery</div>
+        <div class="row-hyp" contenteditable="true" data-id="6" data-field="hypothesis"><b>Customer Hypothesis</b><br>If we prominently surface personalized Live deals by combining deal signals with low-CCU room opportunities, tailored to each buyer’s category affinity and price propensity, deal-motivated non-habitual buyers will enter Live experiences at higher rates.<div><br><b>Success Metrics</b><br>↑ Module CTR<br>↑ Quality Views<br>↑ Live Entry Rate<br>↑ Watch Duration<br>Experience Guardrails<br><br>Only surface deal experiences when buyer relevance and deal quality meet the defined threshold.</div><div><br><b>Variation 1 – Deals Discovery</b> <b>Experience</b><br><br></div><div>Experience: Surface a dedicated Live Deals module.<br><br></div><div><b>Algorithm Updates</b><br>Combine:<br>Deal signals<br>Low-CCU room opportunities<br>Category affinity<br>Price propensity<br><br></div><div><b>Experience&nbsp;</b><span style="font-weight: bold; font-family: -apple-system, BlinkMacSystemFont, &quot;SF Pro Display&quot;, &quot;SF Pro Text&quot;, &quot;Helvetica Neue&quot;, Arial, sans-serif;">Principle: </span><span style="font-family: -apple-system, BlinkMacSystemFont, &quot;SF Pro Display&quot;, &quot;SF Pro Text&quot;, &quot;Helvetica Neue&quot;, Arial, sans-serif;">Context First</span></div><div><b><span style="font-family: -apple-system, BlinkMacSystemFont, &quot;SF Pro Display&quot;, &quot;SF Pro Text&quot;, &quot;Helvetica Neue&quot;, Arial, sans-serif;"><br></span></b></div><div><b>Variation 2 – Dollar Start Discovery<br>Experience</b><br><br>Surface personalized $1 Start and low-starting-bid Live events.<br><b><br></b></div><div><b>Algorithm Updates</b><br>Rank based on:<br>Category affinity<br>Price propensity<br>Deal relevance<br><br></div><div><b>Experience Principle:</b> Low Cost of Trial</div></div>
+        
+        <button class="add-image-btn" onclick="addImage(6)">📎 Add Screenshot</button>
+        <button class="comment-trigger" data-ca="row-6" onclick="toggleCommentThread('row-6')">💬 Comment</button>
+        <div class="comment-thread" id="ct-row-6"></div>
+      </td>
+      <td>
+        <span class="theme-tag" contenteditable="true" data-id="6" data-field="theme">Deals</span>
+      </td>
+      <td><div class="chip-row"><span class="chip surf-on" onclick="toggleSurface(6,'HP',this)">HP</span><span class="chip surf-on" onclick="toggleSurface(6,'Search',this)">Search</span><span class="chip surf-on" onclick="toggleSurface(6,'Live Hub',this)">Live Hub</span><span class="chip surf-off" onclick="toggleSurface(6,'VC',this)">VC</span></div></td>
+      <td><div class="chip-row"><span class="chip out-chip out-off" onclick="toggleOutcome(6,'O1',this)">
+      <span class="out-code">O1</span><span class="out-lbl"> Increase New-to-Live Users</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(6,'O3',this)">
+      <span class="out-code">O3</span><span class="out-lbl"> Retain Habitual Users</span>
+    </span><span class="chip out-chip out-on O4" onclick="toggleOutcome(6,'O4',this)">
+      <span class="out-code">O4</span><span class="out-lbl"> Convert Non-Habitual</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(6,'O5',this)">
+      <span class="out-code">O5</span><span class="out-lbl"> Grow Demand Categories</span>
+    </span></div></td>
+      <td class="impact-td">
+    <div class="impact-col">
+      <div class="bb-badge bb-on">★ Biggest Bet</div>
+      <div class="out-impact-rows">
+    <div class="out-impact-row">
+      <span class="out-imp-label lO4">O4</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(6,'O4','L',this)">L</button><button class="lmh-btn" onclick="setImpact(6,'O4','M',this)">M</button><button class="lmh-btn sel-H" onclick="setImpact(6,'O4','H',this)">H</button>
+      </div>
+    </div>
+  </div>
+      <div class="effort-line">
+        <select class="effort-sel" onchange="setEffort(6,this.value)"><option>Low</option><option selected="">Medium</option><option>High</option></select>
+        <span class="effort-label">effort</span>
+      </div>
+      <div class="notes-field" contenteditable="true" data-id="6" data-field="notes">Hook and Low Effort. ASP Low. Price Propensity at the Buyer Segment Capability: Dynamic</div>
+    </div>
+  </td>
+      <td class="actions-td">
+        <div class="row-actions">
+          <button class="move-btn" onclick="moveUp(6)" title="Move up">▲</button>
+          <button class="move-btn" onclick="moveDown(6)" title="Move down">▼</button>
+          <button class="del-btn" onclick="deleteRow(6)" title="Remove">✕</button>
+        </div>
+      </td>
+    </tr>
+  
+    <tr data-row-id="16">
+      <td class="rank-cell">
+        <div class="rank-num">3</div>
+      </td>
+      <td>
+        <div class="row-title" contenteditable="true" data-id="16" data-field="title">All Buyers: Live Branding Update</div>
+        <div class="row-hyp" contenteditable="true" data-id="16" data-field="hypothesis">Customer Hypothesis<br>If we improve the recognizability of eBay Live entry surfaces through clearer branding and visual identity, buyers will discover and enter Live at higher rates.<br><br>Success Metrics<br>↑ Homepage Live CTR<br>↑ Live Entry Rate<br>↑ Quality Views<br><br>Experience Guardrails<br>No degradation in Homepage engagement or Core Commerce metrics.<br><br>Variation 1 – Homepage Navigation Chip<br>Experience<br>Replace the existing eBay Live chip branding with the new Live Pulse visual identity.<br>Experience Principle<br>Explainability<br><br>Variation 2 – Bottom Navigation Icon<br>Experience<br>Replace the existing Live bottom navigation icon with the new Live Pulse visual identity.<br>Experience Principle<br>Explainability</div>
+        
+        <button class="add-image-btn" onclick="addImage(16)">📎 Add Screenshot</button>
+        <button class="comment-trigger" data-ca="row-16" onclick="toggleCommentThread('row-16')">💬 Comment</button>
+        <div class="comment-thread" id="ct-row-16"></div>
+      </td>
+      <td>
+        <span class="theme-tag" contenteditable="true" data-id="16" data-field="theme">Brand</span>
+      </td>
+      <td><div class="chip-row"><span class="chip surf-on" onclick="toggleSurface(16,'HP',this)">HP</span><span class="chip surf-off" onclick="toggleSurface(16,'Search',this)">Search</span><span class="chip surf-off" onclick="toggleSurface(16,'Live Hub',this)">Live Hub</span><span class="chip surf-off" onclick="toggleSurface(16,'VC',this)">VC</span></div></td>
+      <td><div class="chip-row"><span class="chip out-chip out-on O1" onclick="toggleOutcome(16,'O1',this)">
+      <span class="out-code">O1</span><span class="out-lbl"> Increase New-to-Live Users</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(16,'O3',this)">
+      <span class="out-code">O3</span><span class="out-lbl"> Retain Habitual Users</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(16,'O4',this)">
+      <span class="out-code">O4</span><span class="out-lbl"> Convert Non-Habitual</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(16,'O5',this)">
+      <span class="out-code">O5</span><span class="out-lbl"> Grow Demand Categories</span>
+    </span></div></td>
+      <td class="impact-td">
+    <div class="impact-col">
+      <div class="bb-badge bb-on">★ Biggest Bet</div>
+      <div class="out-impact-rows">
+    <div class="out-impact-row">
+      <span class="out-imp-label lO1">O1</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(16,'O1','L',this)">L</button><button class="lmh-btn" onclick="setImpact(16,'O1','M',this)">M</button><button class="lmh-btn sel-H" onclick="setImpact(16,'O1','H',this)">H</button>
+      </div>
+    </div>
+  </div>
+      <div class="effort-line">
+        <select class="effort-sel" onchange="setEffort(16,this.value)"><option>Low</option><option>Medium</option><option selected="">High</option></select>
+        <span class="effort-label">effort</span>
+      </div>
+      <div class="notes-field" contenteditable="true" data-id="16" data-field="notes">Cross-surface brand change. Homepage breakage risk — must pair with module experience updates.</div>
+    </div>
+  </td>
+      <td class="actions-td">
+        <div class="row-actions">
+          <button class="move-btn" onclick="moveUp(16)" title="Move up">▲</button>
+          <button class="move-btn" onclick="moveDown(16)" title="Move down">▼</button>
+          <button class="del-btn" onclick="deleteRow(16)" title="Remove">✕</button>
+        </div>
+      </td>
+    </tr>
+  
+    <tr data-row-id="7">
+      <td class="rank-cell">
+        <div class="rank-num">4</div>
+      </td>
+      <td>
+        <div class="row-title" contenteditable="true" data-id="7" data-field="title">All Buyers: Context Aware Ranking in Vertical Chaining</div>
+        <div class="row-hyp" contenteditable="true" data-id="7" data-field="hypothesis"><div><b>Customer Hypothesis</b><br>If we rank Live events in Vertical Chaining using buyer context and session intent, buyers will discover more relevant Live events and engage with Live at higher rates.<br>Success Metrics<br><br>↑ Quality Views<br>↑ Live Entry Rate<br>↑ CTR<br>↑ Watch Duration<br>Experience Guardrails<br><br>Surface only Live events that meet the defined relevance threshold.<br><br></div><div><b>Algorithm Updates</b><br>Enhance Vertical Chaining ranking using:<br>Seller affinity<br>Category affinity<br>Entry context<br>Session intent (“What am I doing in this session?”)<br>Knowledge Graph signals<br>Experience Tests<br><br>Test the optimal ranking position of the most relevant Live event within the Vertical Chaining feed (e.g., 4th vs. 5th Live event).<br><br></div><div><b>Experience Principles:&nbsp;</b></div><div>Context First<br>Relevance Over Volume</div></div>
+        
+        <button class="add-image-btn" onclick="addImage(7)">📎 Add Screenshot</button>
+        <button class="comment-trigger" data-ca="row-7" onclick="toggleCommentThread('row-7')">💬 Comment</button>
+        <div class="comment-thread" id="ct-row-7"></div>
+      </td>
+      <td>
+        <span class="theme-tag" contenteditable="true" data-id="7" data-field="theme">Category</span>
+      </td>
+      <td><div class="chip-row"><span class="chip surf-off" onclick="toggleSurface(7,'HP',this)">HP</span><span class="chip surf-off" onclick="toggleSurface(7,'Search',this)">Search</span><span class="chip surf-off" onclick="toggleSurface(7,'Live Hub',this)">Live Hub</span><span class="chip surf-on" onclick="toggleSurface(7,'VC',this)">VC</span></div></td>
+      <td><div class="chip-row"><span class="chip out-chip out-off" onclick="toggleOutcome(7,'O1',this)">
+      <span class="out-code">O1</span><span class="out-lbl"> Increase New-to-Live Users</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(7,'O3',this)">
+      <span class="out-code">O3</span><span class="out-lbl"> Retain Habitual Users</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(7,'O4',this)">
+      <span class="out-code">O4</span><span class="out-lbl"> Convert Non-Habitual</span>
+    </span><span class="chip out-chip out-on O5" onclick="toggleOutcome(7,'O5',this)">
+      <span class="out-code">O5</span><span class="out-lbl"> Grow Demand Categories</span>
+    </span></div></td>
+      <td class="impact-td">
+    <div class="impact-col">
+      <div class="bb-badge bb-on">★ Biggest Bet</div>
+      <div class="out-impact-rows">
+    <div class="out-impact-row">
+      <span class="out-imp-label lO5">O5</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(7,'O5','L',this)">L</button><button class="lmh-btn" onclick="setImpact(7,'O5','M',this)">M</button><button class="lmh-btn sel-H" onclick="setImpact(7,'O5','H',this)">H</button>
+      </div>
+    </div>
+  </div>
+      <div class="effort-line">
+        <select class="effort-sel" onchange="setEffort(7,this.value)"><option>Low</option><option>Medium</option><option selected="">High</option></select>
+        <span class="effort-label">effort</span>
+      </div>
+      <div class="notes-field" contenteditable="true" data-id="7" data-field="notes">Guardrail: watch Quality Views and Exits relative to Scroll Depth.</div>
+    </div>
+  </td>
+      <td class="actions-td">
+        <div class="row-actions">
+          <button class="move-btn" onclick="moveUp(7)" title="Move up">▲</button>
+          <button class="move-btn" onclick="moveDown(7)" title="Move down">▼</button>
+          <button class="del-btn" onclick="deleteRow(7)" title="Remove">✕</button>
+        </div>
+      </td>
+    </tr>
+  
+    <tr data-row-id="1">
+      <td class="rank-cell">
+        <div class="rank-num">5</div>
+      </td>
+      <td>
+        <div class="row-title" contenteditable="true" data-id="1" data-field="title">Live Unaware: Category Prominence</div>
+        <div class="row-hyp" contenteditable="true" data-id="1" data-field="hypothesis"><b>Customer Hypothesis</b><br>If we increase the prominence of relevant Live categories for Live Unaware buyers, while only surfacing the experience when the buyer-category relevance score meets a defined confidence threshold, buyers will discover relevant Live content faster, increasing first-time engagement.<br>Success Metrics<br><br>↑ First-Time Quality Views<br>↑ Module CTR<br>↑ New-to-Live Viewers<br>↓ Module Bounce Rate<br>Experience Guardrail<br><br>Display the Category module only when the buyer-category relevance score meets the predefined confidence threshold; otherwise, suppress the module.<div><br><b>Test 1 – Placement Optimization</b><br>Test the optimal homepage placement of the Category module for eligible Live Unaware buyers.<br><br></div><div><b>Test 2 – Experience Optimization</b><br>Test different category module experiences (titles, visual treatment, category ordering, and information hierarchy) to maximize first-time engagement.</div><div><br></div></div>
+        
+        <button class="add-image-btn" onclick="addImage(1)">📎 Add Screenshot</button>
+        <button class="comment-trigger" data-ca="row-1" onclick="toggleCommentThread('row-1')">💬 Comment</button>
+        <div class="comment-thread" id="ct-row-1"></div>
+      </td>
+      <td>
+        <span class="theme-tag" contenteditable="true" data-id="1" data-field="theme">Category</span>
+      </td>
+      <td><div class="chip-row"><span class="chip surf-on" onclick="toggleSurface(1,'HP',this)">HP</span><span class="chip surf-on" onclick="toggleSurface(1,'Search',this)">Search</span><span class="chip surf-on" onclick="toggleSurface(1,'Live Hub',this)">Live Hub</span><span class="chip surf-off" onclick="toggleSurface(1,'VC',this)">VC</span></div></td>
+      <td><div class="chip-row"><span class="chip out-chip out-on O1" onclick="toggleOutcome(1,'O1',this)">
+      <span class="out-code">O1</span><span class="out-lbl"> Increase New-to-Live Users</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(1,'O3',this)">
+      <span class="out-code">O3</span><span class="out-lbl"> Retain Habitual Users</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(1,'O4',this)">
+      <span class="out-code">O4</span><span class="out-lbl"> Convert Non-Habitual</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(1,'O5',this)">
+      <span class="out-code">O5</span><span class="out-lbl"> Grow Demand Categories</span>
+    </span></div></td>
+      <td class="impact-td">
+    <div class="impact-col">
+      <div class="bb-badge bb-on">★ Biggest Bet</div>
+      <div class="out-impact-rows">
+    <div class="out-impact-row">
+      <span class="out-imp-label lO1">O1</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(1,'O1','L',this)">L</button><button class="lmh-btn" onclick="setImpact(1,'O1','M',this)">M</button><button class="lmh-btn sel-H" onclick="setImpact(1,'O1','H',this)">H</button>
+      </div>
+    </div>
+  </div>
+      <div class="effort-line">
+        <select class="effort-sel" onchange="setEffort(1,this.value)"><option>Low</option><option selected="">Medium</option><option>High</option></select>
+        <span class="effort-label">effort</span>
+      </div>
+      <div class="notes-field" contenteditable="true" data-id="1" data-field="notes">For You - Segmentation Surface Rate and CTA by Segment Surface Rate vs Relevance JB: Define the Audience</div>
+    </div>
+  </td>
+      <td class="actions-td">
+        <div class="row-actions">
+          <button class="move-btn" onclick="moveUp(1)" title="Move up">▲</button>
+          <button class="move-btn" onclick="moveDown(1)" title="Move down">▼</button>
+          <button class="del-btn" onclick="deleteRow(1)" title="Remove">✕</button>
+        </div>
+      </td>
+    </tr>
+  
+    <tr data-row-id="2">
+      <td class="rank-cell">
+        <div class="rank-num">6</div>
+      </td>
+      <td>
+        <div class="row-title" contenteditable="true" data-id="2" data-field="title">Live Unaware: Trusted Seller Discovery</div>
+        <div class="row-hyp" contenteditable="true" data-id="2" data-field="hypothesis"><b>Customer Hypothesis</b><br>If we surface trusted, proven sellers to Live Unaware buyers during their first Live discovery experience, buyers will be more likely to enter high-quality streams, improving first-session quality and increasing continued engagement.<div><br><b>Variation 1:&nbsp;</b>Surface eBay Top Rated Sellers (definition: sellers who meet eBay’s Top Rated Seller criteria).<br><br><div><b>Variation 2:</b> Surface sellers with ≥99% positive feedback rating.<br>Success Metrics<br><br>↑ Module CTR<br>↑ Quality Views<br>↓ Module Bounce Rate<br>↑ First-Time Live Viewers<br>Experience Guardrail<br><br>Only surface sellers that meet the predefined trusted seller criteria.</div></div></div>
+        
+        <button class="add-image-btn" onclick="addImage(2)">📎 Add Screenshot</button>
+        <button class="comment-trigger" data-ca="row-2" onclick="toggleCommentThread('row-2')">💬 Comment</button>
+        <div class="comment-thread" id="ct-row-2"></div>
+      </td>
+      <td>
+        <span class="theme-tag" contenteditable="true" data-id="2" data-field="theme">Seller</span>
+      </td>
+      <td><div class="chip-row"><span class="chip surf-on" onclick="toggleSurface(2,'HP',this)">HP</span><span class="chip surf-on" onclick="toggleSurface(2,'Search',this)">Search</span><span class="chip surf-on" onclick="toggleSurface(2,'Live Hub',this)">Live Hub</span><span class="chip surf-off" onclick="toggleSurface(2,'VC',this)">VC</span></div></td>
+      <td><div class="chip-row"><span class="chip out-chip out-on O1" onclick="toggleOutcome(2,'O1',this)">
+      <span class="out-code">O1</span><span class="out-lbl"> Increase New-to-Live Users</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(2,'O3',this)">
+      <span class="out-code">O3</span><span class="out-lbl"> Retain Habitual Users</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(2,'O4',this)">
+      <span class="out-code">O4</span><span class="out-lbl"> Convert Non-Habitual</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(2,'O5',this)">
+      <span class="out-code">O5</span><span class="out-lbl"> Grow Demand Categories</span>
+    </span></div></td>
+      <td class="impact-td">
+    <div class="impact-col">
+      <div class="bb-badge bb-on">★ Biggest Bet</div>
+      <div class="out-impact-rows">
+    <div class="out-impact-row">
+      <span class="out-imp-label lO1">O1</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(2,'O1','L',this)">L</button><button class="lmh-btn" onclick="setImpact(2,'O1','M',this)">M</button><button class="lmh-btn sel-H" onclick="setImpact(2,'O1','H',this)">H</button>
+      </div>
+    </div>
+  </div>
+      <div class="effort-line">
+        <select class="effort-sel" onchange="setEffort(2,this.value)"><option>Low</option><option selected="">Medium</option><option>High</option></select>
+        <span class="effort-label">effort</span>
+      </div>
+      <div class="notes-field" contenteditable="true" data-id="2" data-field="notes">JB: Define the Audience</div>
+    </div>
+  </td>
+      <td class="actions-td">
+        <div class="row-actions">
+          <button class="move-btn" onclick="moveUp(2)" title="Move up">▲</button>
+          <button class="move-btn" onclick="moveDown(2)" title="Move down">▼</button>
+          <button class="del-btn" onclick="deleteRow(2)" title="Remove">✕</button>
+        </div>
+      </td>
+    </tr>
+  
+    <tr data-row-id="4">
+      <td class="rank-cell">
+        <div class="rank-num">7</div>
+      </td>
+      <td>
+        <div class="row-title" contenteditable="true" data-id="4" data-field="title">All Buyers: Live Event Discovery in Search</div>
+        <div class="row-hyp" contenteditable="true" data-id="4" data-field="hypothesis"><b>Customer Hypothesis</b><br>If we improve the relevance and prominence of Live events in Search, buyers will discover and enter Live experiences at higher rates.<br><br><br><b>Assumption: </b>Providing a back button from a Live event back to Search will reduce navigation friction and encourage buyers to continue exploring additional Live events.<div><br><b>Success Metrics</b><br>↑ Live Event CTR<br>↑ Quality Views<br>↑ Search-to-Live Conversion<br>Experience Guardrails<br><br>Surface Live events only when they meet the defined query relevance threshold.<br><br><b>Variation 1 – Ranking Optimization</b><br><b>Algorithm:</b> Uprank Live events based on query intent, buyer segment, and Live relevance.<br><br><b>Experience Principle:</b> Context First<br><br><br><b>Variation 2 – Query Relevance Optimization</b><br><br><br><b>Algorithm:</b> Improve retrieval and ranking for broad and narrow queries across Habitual and Non-Habitual buyers.<br><br></div><div><b>Experience Principle</b><br>Relevance Over Volume<br><br><br><b>Variation 3 – Search Experience</b><br>Experience: Improve Live copy, badges, placement, and add a back button from Live events to Search.<br><br><b>Experience Principle: </b>Explainability<br><br><b>Variation 4 – Habitual &amp; Live Engaged Upranking</b><br><br><b>Algorithm</b><br>Uprank Live events for Habitual and Live Engaged buyers from Position 5 to a more prominent Search position.<br><br>Experience Principle<br>Low Cost of Trial<br><br><b>Product Discovery (Post-Q3)</b><br>1. Ingest Live events into Search alongside item listings.<br>2. Compare Live event relevance against item listings in unified Search ranking.<br>3. Define the optimal ranking strategy for Live events within Search.</div></div>
+        
+        <button class="add-image-btn" onclick="addImage(4)">📎 Add Screenshot</button>
+        <button class="comment-trigger" data-ca="row-4" onclick="toggleCommentThread('row-4')">💬 Comment</button>
+        <div class="comment-thread" id="ct-row-4"></div>
+      </td>
+      <td>
+        <span class="theme-tag" contenteditable="true" data-id="4" data-field="theme">Awareness</span>
+      </td>
+      <td><div class="chip-row"><span class="chip surf-off" onclick="toggleSurface(4,'HP',this)">HP</span><span class="chip surf-on" onclick="toggleSurface(4,'Search',this)">Search</span><span class="chip surf-off" onclick="toggleSurface(4,'Live Hub',this)">Live Hub</span><span class="chip surf-off" onclick="toggleSurface(4,'VC',this)">VC</span></div></td>
+      <td><div class="chip-row"><span class="chip out-chip out-on O1" onclick="toggleOutcome(4,'O1',this)">
+      <span class="out-code">O1</span><span class="out-lbl"> Increase New-to-Live Users</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(4,'O3',this)">
+      <span class="out-code">O3</span><span class="out-lbl"> Retain Habitual Users</span>
+    </span><span class="chip out-chip out-on O4" onclick="toggleOutcome(4,'O4',this)">
+      <span class="out-code">O4</span><span class="out-lbl"> Convert Non-Habitual</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(4,'O5',this)">
+      <span class="out-code">O5</span><span class="out-lbl"> Grow Demand Categories</span>
+    </span></div></td>
+      <td class="impact-td">
+    <div class="impact-col">
+      <div class="bb-badge bb-on">★ Biggest Bet</div>
+      <div class="out-impact-rows">
+    <div class="out-impact-row">
+      <span class="out-imp-label lO1">O1</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(4,'O1','L',this)">L</button><button class="lmh-btn" onclick="setImpact(4,'O1','M',this)">M</button><button class="lmh-btn sel-H" onclick="setImpact(4,'O1','H',this)">H</button>
+      </div>
+    </div>
+  
+    <div class="out-impact-row">
+      <span class="out-imp-label lO4">O4</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(4,'O4','L',this)">L</button><button class="lmh-btn" onclick="setImpact(4,'O4','M',this)">M</button><button class="lmh-btn sel-H" onclick="setImpact(4,'O4','H',this)">H</button>
+      </div>
+    </div>
+  </div>
+      <div class="effort-line">
+        <select class="effort-sel" onchange="setEffort(4,this.value)"><option>Low</option><option>Medium</option><option selected="">High</option></select>
+        <span class="effort-label">effort</span>
+      </div>
+      <div class="notes-field" contenteditable="true" data-id="4" data-field="notes">Noted as Huge Impact and high effort</div>
+    </div>
+  </td>
+      <td class="actions-td">
+        <div class="row-actions">
+          <button class="move-btn" onclick="moveUp(4)" title="Move up">▲</button>
+          <button class="move-btn" onclick="moveDown(4)" title="Move down">▼</button>
+          <button class="del-btn" onclick="deleteRow(4)" title="Remove">✕</button>
+        </div>
+      </td>
+    </tr>
+  
+    <tr data-row-id="5">
+      <td class="rank-cell">
+        <div class="rank-num">8</div>
+      </td>
+      <td>
+        <div class="row-title" contenteditable="true" data-id="5" data-field="title">All Buyers: Improve “For You” Discovery through Similar "Like Buyer Signals</div>
+        <div class="row-hyp" contenteditable="true" data-id="5" data-field="hypothesis"><b>Customer Hypothesis</b><br>If we improve the ranking algorithms powering the existing For You module using similar buyer (“look-alike”) signals, buyers will discover more relevant Live events, increasing surface rate, engagement, and relevance.<br><br><div><b>Success Metrics</b><br>↑ Surface Rate<br>↑ Module CTR<br>↑ Quality Views<br>↑ Watch Duration<br>Experience Guardrails<br><br>Only surface events when they meet the defined relevance threshold.<br>Maintain recommendation diversity.<br><br><div><b>Variation 1 – Similar Buyer</b> <b>Algorithm</b><br><br></div><div><b>Algorithm Updates</b><br>Tune the existing For You ranking using similar buyer (look-alike) signals.<br>Optimize for Surface Rate and Quality Views.</div><div><br><b>Experience Principle: </b>Context First</div><div><br><b>Variation 2 – Ranking Signal Optimization</b><br><br></div><div><b>Algorithm Updates</b>: Test and optimize the weighting of ranking signals (e.g., buyer affinity, engagement, category interest, recency) to improve recommendation relevance.</div></div></div>
+        
+        <button class="add-image-btn" onclick="addImage(5)">📎 Add Screenshot</button>
+        <button class="comment-trigger" data-ca="row-5" onclick="toggleCommentThread('row-5')">💬 Comment</button>
+        <div class="comment-thread" id="ct-row-5"></div>
+      </td>
+      <td>
+        <span class="theme-tag" contenteditable="true" data-id="5" data-field="theme">Category</span>
+      </td>
+      <td><div class="chip-row"><span class="chip surf-on" onclick="toggleSurface(5,'HP',this)">HP</span><span class="chip surf-off" onclick="toggleSurface(5,'Search',this)">Search</span><span class="chip surf-on" onclick="toggleSurface(5,'Live Hub',this)">Live Hub</span><span class="chip surf-off" onclick="toggleSurface(5,'VC',this)">VC</span></div></td>
+      <td><div class="chip-row"><span class="chip out-chip out-off" onclick="toggleOutcome(5,'O1',this)">
+      <span class="out-code">O1</span><span class="out-lbl"> Increase New-to-Live Users</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(5,'O3',this)">
+      <span class="out-code">O3</span><span class="out-lbl"> Retain Habitual Users</span>
+    </span><span class="chip out-chip out-on O4" onclick="toggleOutcome(5,'O4',this)">
+      <span class="out-code">O4</span><span class="out-lbl"> Convert Non-Habitual</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(5,'O5',this)">
+      <span class="out-code">O5</span><span class="out-lbl"> Grow Demand Categories</span>
+    </span></div></td>
+      <td class="impact-td">
+    <div class="impact-col">
+      <div class="bb-badge bb-on">★ Biggest Bet</div>
+      <div class="out-impact-rows">
+    <div class="out-impact-row">
+      <span class="out-imp-label lO4">O4</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(5,'O4','L',this)">L</button><button class="lmh-btn" onclick="setImpact(5,'O4','M',this)">M</button><button class="lmh-btn sel-H" onclick="setImpact(5,'O4','H',this)">H</button>
+      </div>
+    </div>
+  </div>
+      <div class="effort-line">
+        <select class="effort-sel" onchange="setEffort(5,this.value)"><option>Low</option><option selected="">Medium</option><option>High</option></select>
+        <span class="effort-label">effort</span>
+      </div>
+      <div class="notes-field" contenteditable="true" data-id="5" data-field="notes"></div>
+    </div>
+  </td>
+      <td class="actions-td">
+        <div class="row-actions">
+          <button class="move-btn" onclick="moveUp(5)" title="Move up">▲</button>
+          <button class="move-btn" onclick="moveDown(5)" title="Move down">▼</button>
+          <button class="del-btn" onclick="deleteRow(5)" title="Remove">✕</button>
+        </div>
+      </td>
+    </tr>
+  
+  <tr class="cutline-row">
+    <td colspan="7"><div class="cutline"><span class="cutline-label">Cut Line</span></div></td>
+  </tr>
+    <tr data-row-id="8">
+      <td class="rank-cell">
+        <div class="rank-num">9</div>
+      </td>
+      <td>
+        <div class="row-title" contenteditable="true" data-id="8" data-field="title">Discovery - Social Proof Badging on Event Tile - Seller feedback Rating</div>
+        <div class="row-hyp" contenteditable="true" data-id="8" data-field="hypothesis">If we show signals from Rating, Social Medium Instagram - Followers, buyers will perceive events as more trustworthy, increasing tile CTR. Can help with Cold Start</div>
+        
+        <button class="add-image-btn" onclick="addImage(8)">📎 Add Screenshot</button>
+        <button class="comment-trigger" data-ca="row-8" onclick="toggleCommentThread('row-8')">💬 Comment</button>
+        <div class="comment-thread" id="ct-row-8"></div>
+      </td>
+      <td>
+        <span class="theme-tag" contenteditable="true" data-id="8" data-field="theme">Seller</span>
+      </td>
+      <td><div class="chip-row"><span class="chip surf-on" onclick="toggleSurface(8,'HP',this)">HP</span><span class="chip surf-on" onclick="toggleSurface(8,'Search',this)">Search</span><span class="chip surf-on" onclick="toggleSurface(8,'Live Hub',this)">Live Hub</span><span class="chip surf-on" onclick="toggleSurface(8,'VC',this)">VC</span></div></td>
+      <td><div class="chip-row"><span class="chip out-chip out-on O1" onclick="toggleOutcome(8,'O1',this)">
+      <span class="out-code">O1</span><span class="out-lbl"> Increase New-to-Live Users</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(8,'O3',this)">
+      <span class="out-code">O3</span><span class="out-lbl"> Retain Habitual Users</span>
+    </span><span class="chip out-chip out-on O4" onclick="toggleOutcome(8,'O4',this)">
+      <span class="out-code">O4</span><span class="out-lbl"> Convert Non-Habitual</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(8,'O5',this)">
+      <span class="out-code">O5</span><span class="out-lbl"> Grow Demand Categories</span>
+    </span></div></td>
+      <td class="impact-td">
+    <div class="impact-col">
+      <div class="bb-badge bb-on">★ Biggest Bet</div>
+      <div class="out-impact-rows">
+    <div class="out-impact-row">
+      <span class="out-imp-label lO4">O4</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(8,'O4','L',this)">L</button><button class="lmh-btn" onclick="setImpact(8,'O4','M',this)">M</button><button class="lmh-btn sel-H" onclick="setImpact(8,'O4','H',this)">H</button>
+      </div>
+    </div>
+  
+    <div class="out-impact-row">
+      <span class="out-imp-label lO1">O1</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(8,'O1','L',this)">L</button><button class="lmh-btn" onclick="setImpact(8,'O1','M',this)">M</button><button class="lmh-btn sel-H" onclick="setImpact(8,'O1','H',this)">H</button>
+      </div>
+    </div>
+  </div>
+      <div class="effort-line">
+        <select class="effort-sel" onchange="setEffort(8,this.value)"><option selected="">Low</option><option>Medium</option><option>High</option></select>
+        <span class="effort-label">effort</span>
+      </div>
+      <div class="notes-field" contenteditable="true" data-id="8" data-field="notes"></div>
+    </div>
+  </td>
+      <td class="actions-td">
+        <div class="row-actions">
+          <button class="move-btn" onclick="moveUp(8)" title="Move up">▲</button>
+          <button class="move-btn" onclick="moveDown(8)" title="Move down">▼</button>
+          <button class="del-btn" onclick="deleteRow(8)" title="Remove">✕</button>
+        </div>
+      </td>
+    </tr>
+  
+    <tr data-row-id="9">
+      <td class="rank-cell">
+        <div class="rank-num">10</div>
+      </td>
+      <td>
+        <div class="row-title" contenteditable="true" data-id="9" data-field="title">Habitual: "Fresh Streams" Position Test</div>
+        <div class="row-hyp" contenteditable="true" data-id="9" data-field="hypothesis">If we insert Fresh Streams between Preferred Seller and For You on HP, habitual buyers will discover new sellers without losing relevance, improving CTR and watch duration.</div>
+        
+        <button class="add-image-btn" onclick="addImage(9)">📎 Add Screenshot</button>
+        <button class="comment-trigger" data-ca="row-9" onclick="toggleCommentThread('row-9')">💬 Comment</button>
+        <div class="comment-thread" id="ct-row-9"></div>
+      </td>
+      <td>
+        <span class="theme-tag" contenteditable="true" data-id="9" data-field="theme">Reactivation</span>
+      </td>
+      <td><div class="chip-row"><span class="chip surf-on" onclick="toggleSurface(9,'HP',this)">HP</span><span class="chip surf-off" onclick="toggleSurface(9,'Search',this)">Search</span><span class="chip surf-off" onclick="toggleSurface(9,'Live Hub',this)">Live Hub</span><span class="chip surf-off" onclick="toggleSurface(9,'VC',this)">VC</span></div></td>
+      <td><div class="chip-row"><span class="chip out-chip out-off" onclick="toggleOutcome(9,'O1',this)">
+      <span class="out-code">O1</span><span class="out-lbl"> Increase New-to-Live Users</span>
+    </span><span class="chip out-chip out-on O3" onclick="toggleOutcome(9,'O3',this)">
+      <span class="out-code">O3</span><span class="out-lbl"> Retain Habitual Users</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(9,'O4',this)">
+      <span class="out-code">O4</span><span class="out-lbl"> Convert Non-Habitual</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(9,'O5',this)">
+      <span class="out-code">O5</span><span class="out-lbl"> Grow Demand Categories</span>
+    </span></div></td>
+      <td class="impact-td">
+    <div class="impact-col">
+      <div class="bb-badge bb-off">★ Biggest Bet</div>
+      <div class="out-impact-rows">
+    <div class="out-impact-row">
+      <span class="out-imp-label lO3">O3</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(9,'O3','L',this)">L</button><button class="lmh-btn sel-M" onclick="setImpact(9,'O3','M',this)">M</button><button class="lmh-btn" onclick="setImpact(9,'O3','H',this)">H</button>
+      </div>
+    </div>
+  </div>
+      <div class="effort-line">
+        <select class="effort-sel" onchange="setEffort(9,this.value)"><option selected="">Low</option><option>Medium</option><option>High</option></select>
+        <span class="effort-label">effort</span>
+      </div>
+      <div class="notes-field" contenteditable="true" data-id="9" data-field="notes">P1 Preferred Seller → Fresh Streams → P2 For You.</div>
+    </div>
+  </td>
+      <td class="actions-td">
+        <div class="row-actions">
+          <button class="move-btn" onclick="moveUp(9)" title="Move up">▲</button>
+          <button class="move-btn" onclick="moveDown(9)" title="Move down">▼</button>
+          <button class="del-btn" onclick="deleteRow(9)" title="Remove">✕</button>
+        </div>
+      </td>
+    </tr>
+  
+    <tr data-row-id="10">
+      <td class="rank-cell">
+        <div class="rank-num">11</div>
+      </td>
+      <td>
+        <div class="row-title" contenteditable="true" data-id="10" data-field="title">Non-Habitual: Saved Seller Goes LIVE Notification</div>
+        <div class="row-hyp" contenteditable="true" data-id="10" data-field="hypothesis">If we notify non-habitual buyers the moment a saved seller goes live, it creates a high-relevance pull to return at the right time.</div>
+        
+        <button class="add-image-btn" onclick="addImage(10)">📎 Add Screenshot</button>
+        <button class="comment-trigger" data-ca="row-10" onclick="toggleCommentThread('row-10')">💬 Comment</button>
+        <div class="comment-thread" id="ct-row-10"></div>
+      </td>
+      <td>
+        <span class="theme-tag" contenteditable="true" data-id="10" data-field="theme">Frequency</span>
+      </td>
+      <td><div class="chip-row"><span class="chip surf-on" onclick="toggleSurface(10,'HP',this)">HP</span><span class="chip surf-off" onclick="toggleSurface(10,'Search',this)">Search</span><span class="chip surf-off" onclick="toggleSurface(10,'Live Hub',this)">Live Hub</span><span class="chip surf-off" onclick="toggleSurface(10,'VC',this)">VC</span></div></td>
+      <td><div class="chip-row"><span class="chip out-chip out-off" onclick="toggleOutcome(10,'O1',this)">
+      <span class="out-code">O1</span><span class="out-lbl"> Increase New-to-Live Users</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(10,'O3',this)">
+      <span class="out-code">O3</span><span class="out-lbl"> Retain Habitual Users</span>
+    </span><span class="chip out-chip out-on O4" onclick="toggleOutcome(10,'O4',this)">
+      <span class="out-code">O4</span><span class="out-lbl"> Convert Non-Habitual</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(10,'O5',this)">
+      <span class="out-code">O5</span><span class="out-lbl"> Grow Demand Categories</span>
+    </span></div></td>
+      <td class="impact-td">
+    <div class="impact-col">
+      <div class="bb-badge bb-off">★ Biggest Bet</div>
+      <div class="out-impact-rows">
+    <div class="out-impact-row">
+      <span class="out-imp-label lO4">O4</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(10,'O4','L',this)">L</button><button class="lmh-btn sel-M" onclick="setImpact(10,'O4','M',this)">M</button><button class="lmh-btn" onclick="setImpact(10,'O4','H',this)">H</button>
+      </div>
+    </div>
+  </div>
+      <div class="effort-line">
+        <select class="effort-sel" onchange="setEffort(10,this.value)"><option>Low</option><option>Medium</option><option selected="">High</option></select>
+        <span class="effort-label">effort</span>
+      </div>
+      <div class="notes-field" contenteditable="true" data-id="10" data-field="notes">Effort High</div>
+    </div>
+  </td>
+      <td class="actions-td">
+        <div class="row-actions">
+          <button class="move-btn" onclick="moveUp(10)" title="Move up">▲</button>
+          <button class="move-btn" onclick="moveDown(10)" title="Move down">▼</button>
+          <button class="del-btn" onclick="deleteRow(10)" title="Remove">✕</button>
+        </div>
+      </td>
+    </tr>
+  
+    <tr data-row-id="12">
+      <td class="rank-cell">
+        <div class="rank-num">12</div>
+      </td>
+      <td>
+        <div class="row-title" contenteditable="true" data-id="12" data-field="title">Lead by Deals and Category Info on Event Tile</div>
+        <div class="row-hyp" contenteditable="true" data-id="12" data-field="hypothesis">If we show category info on event tile, buyers will enter at higher rates.</div>
+        
+        <button class="add-image-btn" onclick="addImage(12)">📎 Add Screenshot</button>
+        <button class="comment-trigger" data-ca="row-12" onclick="toggleCommentThread('row-12')">💬 Comment</button>
+        <div class="comment-thread" id="ct-row-12"></div>
+      </td>
+      <td>
+        <span class="theme-tag" contenteditable="true" data-id="12" data-field="theme">Category + Deals</span>
+      </td>
+      <td><div class="chip-row"><span class="chip surf-on" onclick="toggleSurface(12,'HP',this)">HP</span><span class="chip surf-off" onclick="toggleSurface(12,'Search',this)">Search</span><span class="chip surf-on" onclick="toggleSurface(12,'Live Hub',this)">Live Hub</span><span class="chip surf-off" onclick="toggleSurface(12,'VC',this)">VC</span></div></td>
+      <td><div class="chip-row"><span class="chip out-chip out-on O1" onclick="toggleOutcome(12,'O1',this)">
+      <span class="out-code">O1</span><span class="out-lbl"> Increase New-to-Live Users</span>
+    </span><span class="chip out-chip out-on O3" onclick="toggleOutcome(12,'O3',this)">
+      <span class="out-code">O3</span><span class="out-lbl"> Retain Habitual Users</span>
+    </span><span class="chip out-chip out-on O4" onclick="toggleOutcome(12,'O4',this)">
+      <span class="out-code">O4</span><span class="out-lbl"> Convert Non-Habitual</span>
+    </span><span class="chip out-chip out-on O5" onclick="toggleOutcome(12,'O5',this)">
+      <span class="out-code">O5</span><span class="out-lbl"> Grow Demand Categories</span>
+    </span></div></td>
+      <td class="impact-td">
+    <div class="impact-col">
+      <div class="bb-badge bb-off">★ Biggest Bet</div>
+      <div class="out-impact-rows">
+    <div class="out-impact-row">
+      <span class="out-imp-label lO1">O1</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(12,'O1','L',this)">L</button><button class="lmh-btn sel-M" onclick="setImpact(12,'O1','M',this)">M</button><button class="lmh-btn" onclick="setImpact(12,'O1','H',this)">H</button>
+      </div>
+    </div>
+  
+    <div class="out-impact-row">
+      <span class="out-imp-label lO4">O4</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(12,'O4','L',this)">L</button><button class="lmh-btn sel-M" onclick="setImpact(12,'O4','M',this)">M</button><button class="lmh-btn" onclick="setImpact(12,'O4','H',this)">H</button>
+      </div>
+    </div>
+  
+    <div class="out-impact-row">
+      <span class="out-imp-label lO3">O3</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(12,'O3','L',this)">L</button><button class="lmh-btn" onclick="setImpact(12,'O3','M',this)">M</button><button class="lmh-btn" onclick="setImpact(12,'O3','H',this)">H</button>
+      </div>
+    </div>
+  
+    <div class="out-impact-row">
+      <span class="out-imp-label lO5">O5</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(12,'O5','L',this)">L</button><button class="lmh-btn" onclick="setImpact(12,'O5','M',this)">M</button><button class="lmh-btn" onclick="setImpact(12,'O5','H',this)">H</button>
+      </div>
+    </div>
+  </div>
+      <div class="effort-line">
+        <select class="effort-sel" onchange="setEffort(12,this.value)"><option selected="">Low</option><option>Medium</option><option>High</option></select>
+        <span class="effort-label">effort</span>
+      </div>
+      <div class="notes-field" contenteditable="true" data-id="12" data-field="notes"></div>
+    </div>
+  </td>
+      <td class="actions-td">
+        <div class="row-actions">
+          <button class="move-btn" onclick="moveUp(12)" title="Move up">▲</button>
+          <button class="move-btn" onclick="moveDown(12)" title="Move down">▼</button>
+          <button class="del-btn" onclick="deleteRow(12)" title="Remove">✕</button>
+        </div>
+      </td>
+    </tr>
+  
+    <tr data-row-id="11">
+      <td class="rank-cell">
+        <div class="rank-num">13</div>
+      </td>
+      <td>
+        <div class="row-title" contenteditable="true" data-id="11" data-field="title">Vertical feed</div>
+        <div class="row-hyp" contenteditable="true" data-id="11" data-field="hypothesis">Move homepage toward a vertical scrolling feed experience. Parallel test, gated on Live Hub incrementality results.</div>
+        
+        <button class="add-image-btn" onclick="addImage(11)">📎 Add Screenshot</button>
+        <button class="comment-trigger" data-ca="row-11" onclick="toggleCommentThread('row-11')">💬 Comment</button>
+        <div class="comment-thread" id="ct-row-11"></div>
+      </td>
+      <td>
+        <span class="theme-tag" contenteditable="true" data-id="11" data-field="theme">Reactivation</span>
+      </td>
+      <td><div class="chip-row"><span class="chip surf-on" onclick="toggleSurface(11,'HP',this)">HP</span><span class="chip surf-off" onclick="toggleSurface(11,'Search',this)">Search</span><span class="chip surf-off" onclick="toggleSurface(11,'Live Hub',this)">Live Hub</span><span class="chip surf-off" onclick="toggleSurface(11,'VC',this)">VC</span></div></td>
+      <td><div class="chip-row"><span class="chip out-chip out-on O1" onclick="toggleOutcome(11,'O1',this)">
+      <span class="out-code">O1</span><span class="out-lbl"> Increase New-to-Live Users</span>
+    </span><span class="chip out-chip out-on O3" onclick="toggleOutcome(11,'O3',this)">
+      <span class="out-code">O3</span><span class="out-lbl"> Retain Habitual Users</span>
+    </span><span class="chip out-chip out-on O4" onclick="toggleOutcome(11,'O4',this)">
+      <span class="out-code">O4</span><span class="out-lbl"> Convert Non-Habitual</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(11,'O5',this)">
+      <span class="out-code">O5</span><span class="out-lbl"> Grow Demand Categories</span>
+    </span></div></td>
+      <td class="impact-td">
+    <div class="impact-col">
+      <div class="bb-badge bb-off">★ Biggest Bet</div>
+      <div class="out-impact-rows">
+    <div class="out-impact-row">
+      <span class="out-imp-label lO3">O3</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(11,'O3','L',this)">L</button><button class="lmh-btn sel-M" onclick="setImpact(11,'O3','M',this)">M</button><button class="lmh-btn" onclick="setImpact(11,'O3','H',this)">H</button>
+      </div>
+    </div>
+  
+    <div class="out-impact-row">
+      <span class="out-imp-label lO4">O4</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(11,'O4','L',this)">L</button><button class="lmh-btn sel-M" onclick="setImpact(11,'O4','M',this)">M</button><button class="lmh-btn" onclick="setImpact(11,'O4','H',this)">H</button>
+      </div>
+    </div>
+  
+    <div class="out-impact-row">
+      <span class="out-imp-label lO1">O1</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(11,'O1','L',this)">L</button><button class="lmh-btn" onclick="setImpact(11,'O1','M',this)">M</button><button class="lmh-btn" onclick="setImpact(11,'O1','H',this)">H</button>
+      </div>
+    </div>
+  </div>
+      <div class="effort-line">
+        <select class="effort-sel" onchange="setEffort(11,this.value)"><option>Low</option><option selected="">Medium</option><option>High</option></select>
+        <span class="effort-label">effort</span>
+      </div>
+      <div class="notes-field" contenteditable="true" data-id="11" data-field="notes">Habitual segment already deprioritized. Needs buy-in before scoping.</div>
+    </div>
+  </td>
+      <td class="actions-td">
+        <div class="row-actions">
+          <button class="move-btn" onclick="moveUp(11)" title="Move up">▲</button>
+          <button class="move-btn" onclick="moveDown(11)" title="Move down">▼</button>
+          <button class="del-btn" onclick="deleteRow(11)" title="Remove">✕</button>
+        </div>
+      </td>
+    </tr>
+  
+    <tr data-row-id="13">
+      <td class="rank-cell">
+        <div class="rank-num">14</div>
+      </td>
+      <td>
+        <div class="row-title" contenteditable="true" data-id="13" data-field="title">Seller Identity at Top of Event Tile Whatnot Style</div>
+        <div class="row-hyp" contenteditable="true" data-id="13" data-field="hypothesis">If we display seller name and identity prominently on the tile, buyers who recognize the seller will click in at higher rates.</div>
+        
+        <button class="add-image-btn" onclick="addImage(13)">📎 Add Screenshot</button>
+        <button class="comment-trigger" data-ca="row-13" onclick="toggleCommentThread('row-13')">💬 Comment</button>
+        <div class="comment-thread" id="ct-row-13"></div>
+      </td>
+      <td>
+        <span class="theme-tag" contenteditable="true" data-id="13" data-field="theme">Seller</span>
+      </td>
+      <td><div class="chip-row"><span class="chip surf-on" onclick="toggleSurface(13,'HP',this)">HP</span><span class="chip surf-on" onclick="toggleSurface(13,'Search',this)">Search</span><span class="chip surf-on" onclick="toggleSurface(13,'Live Hub',this)">Live Hub</span><span class="chip surf-on" onclick="toggleSurface(13,'VC',this)">VC</span></div></td>
+      <td><div class="chip-row"><span class="chip out-chip out-on O1" onclick="toggleOutcome(13,'O1',this)">
+      <span class="out-code">O1</span><span class="out-lbl"> Increase New-to-Live Users</span>
+    </span><span class="chip out-chip out-on O3" onclick="toggleOutcome(13,'O3',this)">
+      <span class="out-code">O3</span><span class="out-lbl"> Retain Habitual Users</span>
+    </span><span class="chip out-chip out-on O4" onclick="toggleOutcome(13,'O4',this)">
+      <span class="out-code">O4</span><span class="out-lbl"> Convert Non-Habitual</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(13,'O5',this)">
+      <span class="out-code">O5</span><span class="out-lbl"> Grow Demand Categories</span>
+    </span></div></td>
+      <td class="impact-td">
+    <div class="impact-col">
+      <div class="bb-badge bb-off">★ Biggest Bet</div>
+      <div class="out-impact-rows">
+    <div class="out-impact-row">
+      <span class="out-imp-label lO4">O4</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(13,'O4','L',this)">L</button><button class="lmh-btn sel-M" onclick="setImpact(13,'O4','M',this)">M</button><button class="lmh-btn" onclick="setImpact(13,'O4','H',this)">H</button>
+      </div>
+    </div>
+  
+    <div class="out-impact-row">
+      <span class="out-imp-label lO1">O1</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(13,'O1','L',this)">L</button><button class="lmh-btn sel-M" onclick="setImpact(13,'O1','M',this)">M</button><button class="lmh-btn" onclick="setImpact(13,'O1','H',this)">H</button>
+      </div>
+    </div>
+  
+    <div class="out-impact-row">
+      <span class="out-imp-label lO3">O3</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(13,'O3','L',this)">L</button><button class="lmh-btn sel-M" onclick="setImpact(13,'O3','M',this)">M</button><button class="lmh-btn" onclick="setImpact(13,'O3','H',this)">H</button>
+      </div>
+    </div>
+  </div>
+      <div class="effort-line">
+        <select class="effort-sel" onchange="setEffort(13,this.value)"><option selected="">Low</option><option>Medium</option><option>High</option></select>
+        <span class="effort-label">effort</span>
+      </div>
+      <div class="notes-field" contenteditable="true" data-id="13" data-field="notes"></div>
+    </div>
+  </td>
+      <td class="actions-td">
+        <div class="row-actions">
+          <button class="move-btn" onclick="moveUp(13)" title="Move up">▲</button>
+          <button class="move-btn" onclick="moveDown(13)" title="Move down">▼</button>
+          <button class="del-btn" onclick="deleteRow(13)" title="Remove">✕</button>
+        </div>
+      </td>
+    </tr>
+  
+    <tr data-row-id="14">
+      <td class="rank-cell">
+        <div class="rank-num">15</div>
+      </td>
+      <td>
+        <div class="row-title" contenteditable="true" data-id="14" data-field="title">Explain Why Value Prop, You Like, Interest, Bought Before : titles/subtitles (New)</div>
+        <div class="row-hyp" contenteditable="true" data-id="14" data-field="hypothesis">Ongoing algo improvement (MLR v6/v7) to personalize module titles and subtitles on top of existing modules.</div>
+        
+        <button class="add-image-btn" onclick="addImage(14)">📎 Add Screenshot</button>
+        <button class="comment-trigger" data-ca="row-14" onclick="toggleCommentThread('row-14')">💬 Comment</button>
+        <div class="comment-thread" id="ct-row-14"></div>
+      </td>
+      <td>
+        <span class="theme-tag" contenteditable="true" data-id="14" data-field="theme">Algo</span>
+      </td>
+      <td><div class="chip-row"><span class="chip surf-on" onclick="toggleSurface(14,'HP',this)">HP</span><span class="chip surf-off" onclick="toggleSurface(14,'Search',this)">Search</span><span class="chip surf-off" onclick="toggleSurface(14,'Live Hub',this)">Live Hub</span><span class="chip surf-off" onclick="toggleSurface(14,'VC',this)">VC</span></div></td>
+      <td><div class="chip-row"><span class="chip out-chip out-on O1" onclick="toggleOutcome(14,'O1',this)">
+      <span class="out-code">O1</span><span class="out-lbl"> Increase New-to-Live Users</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(14,'O3',this)">
+      <span class="out-code">O3</span><span class="out-lbl"> Retain Habitual Users</span>
+    </span><span class="chip out-chip out-on O4" onclick="toggleOutcome(14,'O4',this)">
+      <span class="out-code">O4</span><span class="out-lbl"> Convert Non-Habitual</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(14,'O5',this)">
+      <span class="out-code">O5</span><span class="out-lbl"> Grow Demand Categories</span>
+    </span></div></td>
+      <td class="impact-td">
+    <div class="impact-col">
+      <div class="bb-badge bb-off">★ Biggest Bet</div>
+      <div class="out-impact-rows">
+    <div class="out-impact-row">
+      <span class="out-imp-label lO1">O1</span>
+      <div class="lmh-group">
+        <button class="lmh-btn sel-L" onclick="setImpact(14,'O1','L',this)">L</button><button class="lmh-btn" onclick="setImpact(14,'O1','M',this)">M</button><button class="lmh-btn" onclick="setImpact(14,'O1','H',this)">H</button>
+      </div>
+    </div>
+  
+    <div class="out-impact-row">
+      <span class="out-imp-label lO4">O4</span>
+      <div class="lmh-group">
+        <button class="lmh-btn sel-L" onclick="setImpact(14,'O4','L',this)">L</button><button class="lmh-btn" onclick="setImpact(14,'O4','M',this)">M</button><button class="lmh-btn" onclick="setImpact(14,'O4','H',this)">H</button>
+      </div>
+    </div>
+  </div>
+      <div class="effort-line">
+        <select class="effort-sel" onchange="setEffort(14,this.value)"><option selected="">Low</option><option>Medium</option><option>High</option></select>
+        <span class="effort-label">effort</span>
+      </div>
+      <div class="notes-field" contenteditable="true" data-id="14" data-field="notes">Effort Unknown</div>
+    </div>
+  </td>
+      <td class="actions-td">
+        <div class="row-actions">
+          <button class="move-btn" onclick="moveUp(14)" title="Move up">▲</button>
+          <button class="move-btn" onclick="moveDown(14)" title="Move down">▼</button>
+          <button class="del-btn" onclick="deleteRow(14)" title="Remove">✕</button>
+        </div>
+      </td>
+    </tr>
+  
+    <tr data-row-id="15">
+      <td class="rank-cell">
+        <div class="rank-num">16</div>
+      </td>
+      <td>
+        <div class="row-title" contenteditable="true" data-id="15" data-field="title">Discovery Arbitration Engine - Dynamically place modules on Home page based on buyer affinity + many other signals</div>
+        <div class="row-hyp" contenteditable="true" data-id="15" data-field="hypothesis">If we [do X], buyers will [outcome].</div>
+        
+        <button class="add-image-btn" onclick="addImage(15)">📎 Add Screenshot</button>
+        <button class="comment-trigger" data-ca="row-15" onclick="toggleCommentThread('row-15')">💬 Comment</button>
+        <div class="comment-thread" id="ct-row-15"></div>
+      </td>
+      <td>
+        <span class="theme-tag" contenteditable="true" data-id="15" data-field="theme">Theme</span>
+      </td>
+      <td><div class="chip-row"><span class="chip surf-off" onclick="toggleSurface(15,'HP',this)">HP</span><span class="chip surf-off" onclick="toggleSurface(15,'Search',this)">Search</span><span class="chip surf-off" onclick="toggleSurface(15,'Live Hub',this)">Live Hub</span><span class="chip surf-off" onclick="toggleSurface(15,'VC',this)">VC</span></div></td>
+      <td><div class="chip-row"><span class="chip out-chip out-on O1" onclick="toggleOutcome(15,'O1',this)">
+      <span class="out-code">O1</span><span class="out-lbl"> Increase New-to-Live Users</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(15,'O3',this)">
+      <span class="out-code">O3</span><span class="out-lbl"> Retain Habitual Users</span>
+    </span><span class="chip out-chip out-on O4" onclick="toggleOutcome(15,'O4',this)">
+      <span class="out-code">O4</span><span class="out-lbl"> Convert Non-Habitual</span>
+    </span><span class="chip out-chip out-off" onclick="toggleOutcome(15,'O5',this)">
+      <span class="out-code">O5</span><span class="out-lbl"> Grow Demand Categories</span>
+    </span></div></td>
+      <td class="impact-td">
+    <div class="impact-col">
+      <div class="bb-badge bb-on">★ Biggest Bet</div>
+      <div class="out-impact-rows">
+    <div class="out-impact-row">
+      <span class="out-imp-label lO1">O1</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(15,'O1','L',this)">L</button><button class="lmh-btn" onclick="setImpact(15,'O1','M',this)">M</button><button class="lmh-btn sel-H" onclick="setImpact(15,'O1','H',this)">H</button>
+      </div>
+    </div>
+  
+    <div class="out-impact-row">
+      <span class="out-imp-label lO4">O4</span>
+      <div class="lmh-group">
+        <button class="lmh-btn" onclick="setImpact(15,'O4','L',this)">L</button><button class="lmh-btn" onclick="setImpact(15,'O4','M',this)">M</button><button class="lmh-btn sel-H" onclick="setImpact(15,'O4','H',this)">H</button>
+      </div>
+    </div>
+  </div>
+      <div class="effort-line">
+        <select class="effort-sel" onchange="setEffort(15,this.value)"><option>Low</option><option>Medium</option><option selected="">High</option></select>
+        <span class="effort-label">effort</span>
+      </div>
+      <div class="notes-field" contenteditable="true" data-id="15" data-field="notes"></div>
+    </div>
+  </td>
+      <td class="actions-td">
+        <div class="row-actions">
+          <button class="move-btn" onclick="moveUp(15)" title="Move up">▲</button>
+          <button class="move-btn" onclick="moveDown(15)" disabled="" title="Move down">▼</button>
+          <button class="del-btn" onclick="deleteRow(15)" title="Remove">✕</button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Changes saved</div>
+
+<script>
+
+
+const SEG_COLORS = {
+  'Habitual':           '#1d1d1f',
+  'Live Engaged':       '#0071e3',
+  'Live Aware (lapsed)':'#c2410c',
+  'Never Tried Live':   '#16a34a'
+};
+const OUTCOME_COLORS = {
+  'Deepen Engagement':  { bg:'#eef2ff', text:'#3730a3', border:'#c7d2fe' },
+  'Broaden Engagement': { bg:'#faf5ff', text:'#6b21a8', border:'#e9d5ff' },
+  'Reactivate':         { bg:'#fff7ed', text:'#9a3412', border:'#fed7aa' },
+  'Activate':           { bg:'#f0fdf4', text:'#15803d', border:'#86efac' }
+};
+
+let metrics = [
+  { id:'m1',  seg:'Habitual',            subSeg:'', outcome:'Deepen Engagement',  level:'L1', name:'Watch Duration per User-Week',    def:'Total watch duration ÷ segment viewers per week',          baseline:'', goal:'' },
+  { id:'m2',  seg:'Habitual',            subSeg:'', outcome:'Deepen Engagement',  level:'L1', name:'Watch Sessions per User-Week',    def:'Total QV watch sessions ÷ segment viewers per week',       baseline:'', goal:'' },
+  { id:'m3',  seg:'Habitual',            subSeg:'', outcome:'Deepen Engagement',  level:'L2', name:'Watch Rate',                      def:'Total QV watch sessions ÷ segment visits per week',        baseline:'', goal:'' },
+  { id:'m4',  seg:'Habitual',            subSeg:'', outcome:'Broaden Engagement', level:'',   name:'QV Hosts Watched per User-Week',  def:'Total QV hosts watched ÷ segment viewers per week',        baseline:'', goal:'', deprio:true },
+  { id:'m5',  seg:'Live Engaged',        subSeg:'', outcome:'Deepen Engagement',  level:'L1', name:'Watch Duration per User-Week',    def:'Total watch duration ÷ segment viewers per week',          baseline:'', goal:'' },
+  { id:'m6',  seg:'Live Engaged',        subSeg:'', outcome:'Deepen Engagement',  level:'L1', name:'Watch Sessions per User-Week',    def:'Total watch sessions ÷ segment viewers per week',          baseline:'', goal:'' },
+  { id:'m7',  seg:'Live Engaged',        subSeg:'', outcome:'Deepen Engagement',  level:'L2', name:'Watch Rate',                      def:'Total QV watch sessions ÷ segment visits per week',        baseline:'', goal:'' },
+  { id:'m8',  seg:'Live Aware (lapsed)', subSeg:'', outcome:'Reactivate',         level:'L1', name:'Watch Rate',                      def:'Total QV watch sessions ÷ segment visits per week',        baseline:'', goal:'' },
+  { id:'m9',  seg:'Never Tried Live',    subSeg:'Should Love Live', outcome:'Activate', level:'L1', name:'Trial Rate',               def:'Total first-time QV sessions ÷ segment sessions per week', baseline:'', goal:'' }
+];
+
+function renderGoals() {
+  const wrap = document.getElementById('metrics-wrap');
+  if (!wrap) return;
+  const segs = [...new Set(metrics.map(m => m.seg))];
+  wrap.innerHTML = segs.map(seg => {
+    const rows = metrics.filter(m => m.seg === seg);
+    const color = SEG_COLORS[seg] || '#1d1d1f';
+    const primaryOutcome = rows.find(r => !r.deprio)?.outcome || rows[0]?.outcome;
+    const oc = OUTCOME_COLORS[primaryOutcome] || { bg:'#f5f5f7', text:'#6e6e73', border:'#d2d2d7' };
+    const subSeg = rows[0]?.subSeg;
+    return `
+      <div class="seg-block">
+        <div class="seg-header" style="border-left-color:${color}">
+          <span class="seg-name">${esc(seg)}</span>
+          ${subSeg ? `<span class="seg-subseg">${esc(subSeg)}</span>` : ''}
+          <span class="seg-outcome" style="background:${oc.bg};color:${oc.text};border-color:${oc.border}">${esc(primaryOutcome)}</span>
+          <button class="comment-trigger" style="margin-left:12px;margin-top:0" data-ca="seg-${esc(seg)}" onclick="toggleCommentThread('seg-${esc(seg)}')">💬 Comment</button>
+        </div>
+        <div class="comment-thread" id="ct-seg-${esc(seg)}" style="padding:10px 20px"></div>
+        <table class="metrics-tbl">
+          <colgroup>
+            <col style="width:28%"><col style="width:20%"><col style="width:7%">
+            <col style="width:27%"><col style="width:9%"><col style="width:9%">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Metric</th><th>Desired Outcome</th><th>Level</th>
+              <th>Definition</th><th>Baseline</th><th>Goal</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map(m => {
+              const moc = OUTCOME_COLORS[m.outcome] || { bg:'#f5f5f7', text:'#6e6e73', border:'#d2d2d7' };
+              return `
+              <tr class="${m.deprio ? 'row-deprio' : ''}">
+                <td>
+                  <div class="metric-name">${esc(m.name)}</div>
+                </td>
+                <td>
+                  <span class="outcome-pill" style="background:${moc.bg};color:${moc.text};border-color:${moc.border}">
+                    ${esc(m.outcome)}
+                  </span>
+                </td>
+                <td>${m.level ? `<span class="lvl-badge lvl-${m.level}">${m.level}</span>` : ''}</td>
+                <td><span class="metric-def-txt">${esc(m.def)}</span></td>
+                <td><div class="metric-editable" contenteditable="true" data-mid="${m.id}" data-mf="baseline">${esc(m.baseline)}</div></td>
+                <td><div class="metric-editable goal-editable" contenteditable="true" data-mid="${m.id}" data-mf="goal">${esc(m.goal)}</div></td>
+              </tr>`}).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }).join('');
+  wrap.querySelectorAll('[contenteditable][data-mid]').forEach(el => {
+    el.addEventListener('blur', () => {
+      const m = metrics.find(m => m.id === el.dataset.mid);
+      if (m) m[el.dataset.mf] = el.innerText.trim();
+    });
+  });
+  updateAllTriggers();
+}
+
+const TABS = ['principles', 'goals', 'roadmap'];
+
+let principles = [
+  { id: 'p1', title: 'Earn the Tap Before You Ask for It', desc: 'I opened eBay for something else. Show me why this stream is worth stopping for before you ask me to tap in.' },
+  { id: 'p2', title: 'Make the Unknown Feel Known', desc: 'I don\'t join what I don\'t recognize. Give me a seller name, a category, a price point. Then I\'ll decide.' },
+  { id: 'p3', title: 'Make Trying Feel Free', desc: 'I\'ll tap in if I know I can leave. Protect my place in the app and I\'ll explore. Make it feel like a trap and I won\'t come back.' },
+  { id: 'p4', title: 'Tell Me Why', desc: '"Recommended for you" means nothing. "Because you watched sneakers last week" means I\'ll click. Earn my trust by showing your reasoning.' },
+  { id: 'p5', title: 'Different Buyers, Different Jobs', desc: 'I\'m not here for the same reason every day. Show me what fits where I am right now, not what works for someone else.' },
+  { id: 'p6', title: 'One Good Stream Should Lead to Another', desc: 'When I leave a stream, I\'m still in the mood. Don\'t drop me. Show me what\'s next.' },
+  { id: 'p7', title: 'Build for the World from Day One', desc: 'I should get the same quality of discovery whether I\'m in the US or the UK. Don\'t make my market an afterthought.' },
+  { id: 'p8', title: 'Meet Me on Every Device', desc: 'I found Live on my phone. Don\'t give me a worse experience because I switched to my laptop. The promise should travel with me.' },
+];
+
+function renderPrinciples() {
+  const grid = document.getElementById('principles-grid');
+  grid.innerHTML = principles.map((p, i) => `
+    <div class="principle-card">
+      <div class="principle-num">${i + 1}</div>
+      <div class="principle-title" contenteditable="true" data-pid="${p.id}" data-pf="title">${esc(p.title)}</div>
+      <div class="principle-desc" contenteditable="true" data-pid="${p.id}" data-pf="desc">${esc(p.desc)}</div>
+      <button class="comment-trigger" data-ca="princ-${p.id}" onclick="toggleCommentThread('princ-${p.id}')">💬 Comment</button>
+      <div class="comment-thread" id="ct-princ-${p.id}"></div>
+    </div>
+  `).join('');
+  grid.querySelectorAll('[contenteditable][data-pid]').forEach(el => {
+    el.addEventListener('blur', () => {
+      const p = principles.find(p => p.id === el.dataset.pid);
+      if (p) p[el.dataset.pf] = el.innerText.trim();
+    });
+  });
+  updateAllTriggers();
+}
+
+function switchTab(tab) {
+  TABS.forEach(t => {
+    document.getElementById('tab-' + t).classList.toggle('tab-visible', t === tab);
+    const btn = document.querySelector('[data-tab="' + t + '"]');
+    if (btn) btn.classList.toggle('tab-active', t === tab);
+  });
+  history.replaceState(null, '', '#' + tab);
+}
+
+function copyLink() {
+  const url = location.href.split('#')[0] + location.hash;
+  navigator.clipboard.writeText(url).then(() => {
+    const t = document.getElementById('toast');
+    t.textContent = 'Link copied!';
+    t.classList.add('show');
+    setTimeout(() => { t.classList.remove('show'); t.textContent = 'Changes saved'; }, 2000);
+  });
+}
+
+window.addEventListener('hashchange', () => {
+  const tab = location.hash.slice(1);
+  if (TABS.includes(tab)) switchTab(tab);
+});
+
+const SURFACES = ['HP', 'Search', 'Live Hub', 'VC'];
+const OUTCOME_LABELS = { O1: 'Increase New-to-Live Users', O3: 'Retain Habitual Users', O4: 'Convert Non-Habitual', O5: 'Grow Demand Categories' };
+const OUTCOMES = ['O1', 'O3', 'O4', 'O5'];
+const EFFORTS  = ['Low', 'Medium', 'High'];
+let _nid = 17;
+let _resizing = null;
+
+let goals = [
+  { id: 'g1', segment: 'New-to-Live',  O1: '', O3: '', O4: '', O5: '' },
+  { id: 'g2', segment: 'Habitual',     O1: '', O3: '', O4: '', O5: '' },
+  { id: 'g3', segment: 'Non-Habitual', O1: '', O3: '', O4: '', O5: '' },
+];
+let _gnid = 4;
+
+let rows = [
+  {
+    id: 1,
+    title: 'Category Prominence for New-to-Live Buyers (We know who they are)',
+    hypothesis: 'If we route first-time Live buyers to their preferred categories, we will be able to engage/increase their quality Views\n\nOptimize CTR, Reduce Bounce, Quality Views\n\nAlgo Update - Introduce Relevance Threshold (Leverage from previous A/B tests)\n\nInclude Copy',
+    theme: 'Category',
+    surfaces: { HP: true, Search: true, 'Live Hub': true, VC: false },
+    outcomes: { O1: 'H' },
+    biggestBet: true,
+    effort: 'Medium',
+    notes: 'For You - Segmentation  Surface Rate and CTA by Segment  Surface Rate vs Relevance  JB: Define the Audience',
+    customerHypothesis: 'If a new-to-Live buyer is shown streams in categories they already browse, it would help them find something relevant on their first visit, making it easier to stay and explore.'
+  },
+  {
+    id: 2,
+    title: 'Bring Top Sellers for New-to-Live Buyers',
+    hypothesis: 'If we route first-time Live buyers to proven, trusted sellers, we prevent them from landing in low-quality streams, increasing first-session quality and likelihood of return. Definition: Top Sellers from ebay\n\nVariation: 99% Feedback Rating\n\nToday if you have not saved the seller, you will not be shown Preferred Seller module.  Optimize CTR, Reduce Bounce, Quality Views',
+    theme: 'Seller',
+    surfaces: { HP: true, Search: true, 'Live Hub': true, VC: false },
+    outcomes: { O1: 'H' },
+    biggestBet: true,
+    effort: 'Medium',
+    notes: 'JB: Define the Audience',
+    customerHypothesis: 'If a new buyer is matched to a top trusted seller first, it would help them have a quality first session, making it easier to trust the Live format and come back.'
+  },
+  {
+    id: 16,
+    title: 'All Buyers: Homepage Entry Surface Branding',
+    hypothesis: 'Customer Hypothesis\nIf we improve the recognizability of eBay Live entry surfaces through clearer branding and visual identity, buyers will discover and enter Live at higher rates.\n\nSuccess Metrics\n↑ Homepage Live CTR\n↑ Live Entry Rate\n↑ Quality Views\n\nExperience Guardrails\nNo degradation in Homepage engagement or Core Commerce metrics.\n\nVariation 1 – Homepage Navigation Chip\nExperience\nReplace the existing eBay Live chip branding with the new Live Pulse visual identity.\nExperience Principle\nExplainability\n\nVariation 2 – Bottom Navigation Icon\nExperience\nReplace the existing Live bottom navigation icon with the new Live Pulse visual identity.\nExperience Principle\nExplainability',
+    theme: 'Brand',
+    surfaces: { HP: true, Search: true, 'Live Hub': true, VC: true },
+    outcomes: { O1: 'H' },
+    biggestBet: true,
+    effort: 'High',
+    notes: 'Cross-surface brand change. Homepage breakage risk — must pair with module experience updates.'
+  },
+  {
+    id: 3,
+    title: 'Non-Habitual (Live Engaged): Preferred Seller at Top, Habitual, Unaware',
+    hypothesis: 'If we rank sellers based on prior purchase, watch history, and NB buyer signals, non-habitual buyers will recognize and click through to familiar sellers at higher rates. Bring Preferred Seller for all Non Habitual Buyers\n\nAlgo:  Followed  Sellers we purchased from  Watched >= x minutes in the last y number of days  Bought From\n\nFast Follow - Seller Identity at Top of Event Tile Whatnot Style\n\nExperience - Different Module\n1, 2  3 event titles',
+    theme: 'Reactivation',
+    surfaces: { HP: true, Search: false, 'Live Hub': true, VC: false },
+    outcomes: { O4: 'H', O3: null, O1: null },
+    biggestBet: true,
+    effort: 'Low',
+    notes: 'Bought / Watched / NB Buyer signals. Low Effort.',
+    customerHypothesis: 'If a returning buyer is shown sellers they have previously bought from or watched, it would help them recognize familiar faces, making it easier to click in without hesitation.'
+  },
+  {
+    id: 4,
+    title: 'LIVE Events in Search for all Users',
+    hypothesis: 'SRP, buyers actively searching will discover and enter Live at higher rates.\n\nAssumption:\nGap: Back Button on Search\n\n1) Test 1 - Upranking\nDiscovery: How might upranking work based on Query/Buyer Segment?\n\n2) Test 2 - Query based relevance Improvement across all users\nTest & Learn 1 - Broad Query and Narrow -\n- Habitual\n- Non Habitual\n\nTest 3) Experiencial Improvements\n\nTest 4) - Query + Segment\nHabitual (<5) + Live Engaged (<5)\n\nPrinciple - Cost of low Trial\n\nDiscovery: Ingestion of LIVE events and comparing it with Listings\n\nOther\nRelevance and Copy - Global 5 position for LIVE on Search',
+    theme: 'Awareness',
+    surfaces: { HP: false, Search: true, 'Live Hub': false, VC: false },
+    outcomes: { O1: 'H', O4: 'H' },
+    biggestBet: true,
+    effort: 'High',
+    notes: 'Noted as Huge Impact and high effort',
+    customerHypothesis: 'If a buyer searching for a specific item is shown relevant Live events in results, it would help them discover Live as a purchasing path, making it easier to enter without leaving search.'
+  },
+  {
+    id: 5,
+    title: 'For You: Improvement Algos',
+    hypothesis: 'Tune the existing For You module for similar Like Buyers to increase Surface Rate and Relevance.',
+    theme: 'Category',
+    surfaces: { HP: true, Search: false, 'Live Hub': true, VC: false },
+    outcomes: { O4: 'H' },
+    biggestBet: true,
+    effort: 'Medium',
+    notes: '',
+    customerHypothesis: 'If a buyer sees a For You module that reflects what similar buyers actually watch, it would help them find streams that feel personally curated, making it easier to trust and click in.'
+  },
+  {
+    id: 6,
+    title: 'Non-Habitual: Deals / Dollar Starts',
+    hypothesis: 'If we prominently surface personalized Live deals by combining deal signals with low-CCU room opportunities, tailored to each buyer\'s category affinity and price propensity, deal-motivated non-habitual buyers will enter Live experiences at higher rates.\n\nSuccess Metrics\n↑ Module CTR\n↑ Quality Views\n↑ Live Entry Rate\n↑ Watch Duration\n\nExperience Guardrails\nOnly surface deal experiences when buyer relevance and deal quality meet the defined threshold.\n\nVariation 1 – Deals Discovery Experience\nExperience\nSurface a dedicated Live Deals module.\nAlgorithm Updates\nCombine:\nDeal signals\nLow-CCU room opportunities\nCategory affinity\nPrice propensity\nExperience Principle\nContext First\n\nVariation 2 – Dollar Start Discovery\nExperience\nSurface personalized $1 Start and low-starting-bid Live events.\nAlgorithm Updates\nRank based on:\nCategory affinity\nPrice propensity\nDeal relevance\nExperience Principle\nLow Cost of Trial',
+    theme: 'Deals',
+    surfaces: { HP: true, Search: true, 'Live Hub': true, VC: false },
+    outcomes: { O4: 'H' },
+    biggestBet: true,
+    effort: 'Medium',
+    notes: 'Hook and Low Effort. ASP Low. Price Propensity at the Buyer Segment  Capability: Dynamic',
+    customerHypothesis: 'If a deal-motivated buyer is shown Live streams with visible price signals upfront, it would help them identify value quickly, making it easier to enter without wasting a click.'
+  },
+  {
+    id: 7,
+    title: 'Entry Context of the Session : Entry Surface Awareness in VC in Algo - Category & Channel',
+    hypothesis: 'If we diversify Live events in VC by category and channel, buyers will discover more relevant events.\n\nKnowledge Graph\n\nDefine the point - 4th & 5th\n\nSeller\nCategory\nEntry Context\nWhat am I doing in the Session',
+    theme: 'Category',
+    surfaces: { HP: false, Search: false, 'Live Hub': false, VC: true },
+    outcomes: { O5: 'H' },
+    biggestBet: true,
+    effort: 'High',
+    notes: 'Guardrail: watch Quality Views and Exits relative to Scroll Depth.',
+    customerHypothesis: 'If a buyer in the carousel is shown a diverse mix of categories and channels, it would help them discover content outside their usual patterns, making it easier to find something new worth watching.'
+  },
+  {
+    id: 8,
+    title: 'Discovery - Social Proof Badging on Event Tile - Seller feedback Rating',
+    hypothesis: 'If we show signals from Rating, Social Medium Instagram - Followers, buyers will perceive events as more trustworthy, increasing tile CTR. Can help with Cold Start',
+    theme: 'Seller',
+    surfaces: { HP: true, Search: true, 'Live Hub': true, VC: true },
+    outcomes: { O4: 'H', O1: 'H', O3: null },
+    biggestBet: true,
+    effort: 'Low',
+    notes: '',
+    customerHypothesis: 'If a buyer sees seller ratings and social signals on the tile, it would help them assess quality before clicking in, making it easier to choose a stream they trust.'
+  },
+  {
+    id: 9,
+    title: 'Habitual: "Fresh Streams" Position Test',
+    hypothesis: 'If we insert Fresh Streams between Preferred Seller and For You on HP, habitual buyers will discover new sellers without losing relevance, improving CTR and watch duration.',
+    theme: 'Reactivation',
+    surfaces: { HP: true, Search: false, 'Live Hub': false, VC: false },
+    outcomes: { O3: 'M' },
+    biggestBet: false,
+    effort: 'Low',
+    notes: 'P1 Preferred Seller → Fresh Streams → P2 For You.',
+    customerHypothesis: 'If a habitual buyer sees fresh streams positioned between familiar sellers, it would help them discover new sellers naturally, making it easier to grow their viewing habits without feeling lost.'
+  },
+  {
+    id: 10,
+    title: 'Non-Habitual: Saved Seller Goes LIVE Notification',
+    hypothesis: 'If we notify non-habitual buyers the moment a saved seller goes live, it creates a high-relevance pull to return at the right time.',
+    theme: 'Frequency',
+    surfaces: { HP: true, Search: false, 'Live Hub': false, VC: false },
+    outcomes: { O4: 'M' },
+    biggestBet: false,
+    effort: 'High',
+    notes: 'Effort High',
+    customerHypothesis: 'If a buyer is notified the moment a seller they have saved goes live, it would help them catch streams they would otherwise miss, making it easier to re-engage at exactly the right moment.'
+  },
+  {
+    id: 11,
+    title: 'Vertical feed',
+    hypothesis: 'Move homepage toward a vertical scrolling feed experience. Parallel test, gated on Live Hub incrementality results.',
+    theme: 'Reactivation',
+    surfaces: { HP: true, Search: false, 'Live Hub': false, VC: false },
+    outcomes: { O3: 'M', O4: 'M', O1: null },
+    biggestBet: false,
+    effort: 'Medium',
+    notes: 'Habitual segment already deprioritized. Needs buy-in before scoping.',
+    customerHypothesis: 'If a buyer can scroll vertically through a feed of Live events, it would help them see more options in less time, making it easier to find something worth watching.'
+  },
+  {
+    id: 12,
+    title: 'Lead by Deals and Category Info on Event Tile',
+    hypothesis: 'If we show category info on event tile, buyers will enter at higher rates.',
+    theme: 'Category + Deals',
+    surfaces: { HP: true, Search: false, 'Live Hub': true, VC: false },
+    outcomes: { O1: 'M', O4: 'M', O3: null, O5: null },
+    biggestBet: false,
+    effort: 'Low',
+    notes: '',
+    customerHypothesis: 'If a buyer sees category and deal signals directly on the event tile, it would help them filter relevance before clicking in, making it easier to decide without wasting a visit.'
+  },
+  {
+    id: 13,
+    title: 'Seller Identity at Top of Event Tile Whatnot Style',
+    hypothesis: 'If we display seller name and identity prominently on the tile, buyers who recognize the seller will click in at higher rates.',
+    theme: 'Seller',
+    surfaces: { HP: true, Search: true, 'Live Hub': true, VC: true },
+    outcomes: { O4: 'M', O1: 'M', O3: 'M' },
+    biggestBet: false,
+    effort: 'Low',
+    notes: '',
+    customerHypothesis: 'If a buyer can see the seller identity prominently on the tile, it would help them recognize trusted sellers instantly, making it easier to click in with confidence.'
+  },
+  {
+    id: 14,
+    title: 'Explain Why Value Prop, You Like, Interest, Bought Before : titles/subtitles (New)',
+    hypothesis: 'Ongoing algo improvement (MLR v6/v7) to personalize module titles and subtitles on top of existing modules.',
+    theme: 'Algo',
+    surfaces: { HP: true, Search: false, 'Live Hub': false, VC: false },
+    outcomes: { O1: 'L', O4: 'L' },
+    biggestBet: false,
+    effort: 'Low',
+    notes: 'Effort Unknown',
+    customerHypothesis: 'If a buyer sees module titles that reflect their specific interests, it would help them understand why content is being shown, making it easier to trust and engage with the recommendation.'
+  },
+  {
+    id: 15,
+    title: 'Arbitration Engine - Dynamically place modules on Home page based on buyer affinity + many other signals',
+    hypothesis: 'If we [do X], buyers will [outcome].',
+    theme: 'Theme',
+    surfaces: { HP: false, Search: false, 'Live Hub': false, VC: false },
+    outcomes: { O1: 'H', O4: 'H' },
+    biggestBet: true,
+    effort: 'High',
+    notes: '',
+    customerHypothesis: 'If a buyer homepage modules are dynamically ordered by their affinity and intent signals, it would help them see the most relevant content first, making it easier to find a show worth watching.'
+  }
+];
+
+try {
+  if (localStorage.getItem('q3-data-version') !== '3') {
+    localStorage.removeItem('q3-principles-v1');
+    localStorage.removeItem('q3-goals-v1');
+    localStorage.removeItem('q3-metrics-v1');
+    localStorage.setItem('q3-data-version', '3');
+  }
+} catch(e) {}
+try {
+  const saved = localStorage.getItem('q3-roadmap-v1');
+  if (saved) {
+    rows = JSON.parse(saved);
+    _nid = Math.max(...rows.map(r => r.id)) + 1;
+    // Inject any new source rows missing from localStorage (by id)
+    const defaultRows_snapshot = [
+      { id: 16, title: 'All Buyers: Homepage Entry Surface Branding', insertAfter: 2 }
+    ];
+    defaultRows_snapshot.forEach(snap => {
+      if (!rows.find(r => r.id === snap.id)) {
+        const newRow = rows.length > 0 ? null : null; // find from source
+        // Find the full row from the pre-loaded default rows array (before localStorage override)
+        const src = [{ id:16, title:'All Buyers: Homepage Entry Surface Branding', hypothesis:'Customer Hypothesis\nIf we improve the recognizability of eBay Live entry surfaces through clearer branding and visual identity, buyers will discover and enter Live at higher rates.\n\nSuccess Metrics\n↑ Homepage Live CTR\n↑ Live Entry Rate\n↑ Quality Views\n\nExperience Guardrails\nNo degradation in Homepage engagement or Core Commerce metrics.\n\nVariation 1 – Homepage Navigation Chip\nExperience\nReplace the existing eBay Live chip branding with the new Live Pulse visual identity.\nExperience Principle\nExplainability\n\nVariation 2 – Bottom Navigation Icon\nExperience\nReplace the existing Live bottom navigation icon with the new Live Pulse visual identity.\nExperience Principle\nExplainability', theme:'Brand', surfaces:{HP:true,Search:false,'Live Hub':false,VC:false}, outcomes:{O1:'H'}, biggestBet:true, effort:'High', notes:'Cross-surface brand change. Homepage breakage risk — must pair with module experience updates.' }];
+        rows.splice(snap.insertAfter, 0, src[0]);
+      }
+    });
+  }
+  const savedGoals = localStorage.getItem('q3-goals-v1');
+  if (savedGoals) { goals = JSON.parse(savedGoals); }
+  const savedPrinciples = localStorage.getItem('q3-principles-v1');
+  if (savedPrinciples) {
+    const _pp = JSON.parse(savedPrinciples);
+    if (_pp[0] && _pp[0].title === 'Earn the Tap Before You Ask for It') {
+      principles = _pp;
+    } else {
+      localStorage.removeItem('q3-principles-v1');
+    }
+  }
+  const savedMetrics = localStorage.getItem('q3-metrics-v1');
+  if (savedMetrics) { metrics = JSON.parse(savedMetrics); }
+  // Repair double-encoded entities left by earlier saves
+  rows.forEach(r => {
+    ['title','hypothesis'].forEach(f => {
+      if (r[f]) r[f] = r[f]
+        .replace(/&amp;amp;/g, '&amp;')
+        .replace(/&amp;lt;/g,  '&lt;')
+        .replace(/&amp;gt;/g,  '&gt;')
+        .replace(/&amp;quot;/g,'&quot;');
+    });
+  });
+} catch(e) {}
+
+// ---- Comment data ----
+let comments = {};
+try {
+  const sc = localStorage.getItem('q3-comments-v1');
+  if (sc) comments = JSON.parse(sc);
+} catch(e) {}
+
+function saveComments() {
+  localStorage.setItem('q3-comments-v1', JSON.stringify(comments));
+  updateCommentsBtnCount();
+}
+function getCommenterName() {
+  let n = localStorage.getItem('q3-commenter-name');
+  if (!n) {
+    n = (prompt('Your name (shown on comments):') || 'Anonymous').trim() || 'Anonymous';
+    localStorage.setItem('q3-commenter-name', n);
+  }
+  return n;
+}
+function _avatarInitials(name) {
+  return name.trim().split(/\s+/).map(w => w[0]).join('').slice(0,2).toUpperCase();
+}
+function _avatarColor(name) {
+  const pal = ['#0071e3','#34c759','#ff9500','#af52de','#ff375f','#5ac8fa'];
+  let h = 0; for (const c of name) h = (h * 31 + c.charCodeAt(0)) % pal.length;
+  return pal[h];
+}
+function toggleCommentThread(anchor) {
+  const t = document.getElementById('ct-' + anchor);
+  if (!t) return;
+  const opening = !t.classList.contains('open');
+  t.classList.toggle('open');
+  if (opening) renderCommentThread(anchor);
+}
+function renderCommentThread(anchor) {
+  const t = document.getElementById('ct-' + anchor);
+  if (!t) return;
+  const list = comments[anchor] || [];
+  t.innerHTML = list.map(c => `
+    <div class="comment-item">
+      <div class="comment-avatar" style="background:${_avatarColor(c.author)}">${_avatarInitials(c.author)}</div>
+      <div class="comment-body">
+        <div class="comment-meta">${esc(c.author)} · ${c.time}</div>
+        <div class="comment-text">${esc(c.text)}</div>
+      </div>
+    </div>`).join('') + `
+  <div class="comment-input-row">
+    <textarea class="comment-input" id="ci-${anchor}" placeholder="Add a comment…" rows="2"></textarea>
+    <button class="comment-submit" onclick="submitComment('${anchor}')">Post</button>
+  </div>`;
+}
+function submitComment(anchor) {
+  const inp = document.getElementById('ci-' + anchor);
+  if (!inp) return;
+  const text = inp.value.trim();
+  if (!text) return;
+  const author = getCommenterName();
+  if (!comments[anchor]) comments[anchor] = [];
+  const d = new Date();
+  comments[anchor].push({ author, text, time: d.toLocaleDateString('en-US',{month:'short',day:'numeric'}) });
+  saveComments();
+  renderCommentThread(anchor);
+  refreshCommentTrigger(anchor);
+}
+function refreshCommentTrigger(anchor) {
+  document.querySelectorAll(`[data-ca="${anchor}"]`).forEach(btn => {
+    const n = (comments[anchor] || []).length;
+    btn.textContent = n > 0 ? `💬 ${n} comment${n > 1 ? 's' : ''}` : '💬 Comment';
+    btn.classList.toggle('has-comments', n > 0);
+  });
+}
+function updateAllTriggers() {
+  Object.keys(comments).forEach(a => refreshCommentTrigger(a));
+  updateCommentsBtnCount();
+}
+function updateCommentsBtnCount() {
+  const total = Object.values(comments).reduce((s, a) => s + a.length, 0);
+  const btn = document.getElementById('comments-nav-btn');
+  if (!btn) return;
+  btn.textContent = total > 0 ? `💬 Comments (${total})` : '💬 Comments';
+  btn.classList.toggle('has-comments', total > 0);
+}
+function showAllComments() {
+  document.getElementById('cmodal-overlay').classList.add('open');
+  const body = document.getElementById('all-comments-body');
+  const parts = [];
+  rows.forEach((r, i) => {
+    const list = comments['row-' + r.id] || [];
+    if (list.length) parts.push(renderCSection(`Roadmap #${i+1}: ${r.title}`, list));
+  });
+  principles.forEach((p, i) => {
+    const list = comments['princ-' + p.id] || [];
+    if (list.length) parts.push(renderCSection(`Principle #${i+1}: ${p.title}`, list));
+  });
+  [...new Set(metrics.map(m => m.seg))].forEach(seg => {
+    const list = comments['seg-' + seg] || [];
+    if (list.length) parts.push(renderCSection(`Goals: ${seg}`, list));
+  });
+  body.innerHTML = parts.length ? parts.join('') : '<div class="cno-comments">No comments yet.</div>';
+}
+function renderCSection(title, list) {
+  return `<div class="csec-title">${esc(title)}</div>` +
+    list.map(c => `
+      <div class="comment-item">
+        <div class="comment-avatar" style="background:${_avatarColor(c.author)}">${_avatarInitials(c.author)}</div>
+        <div class="comment-body">
+          <div class="comment-meta">${esc(c.author)} · ${c.time}</div>
+          <div class="comment-text">${esc(c.text)}</div>
+        </div>
+      </div>`).join('');
+}
+function hideAllComments() {
+  document.getElementById('cmodal-overlay').classList.remove('open');
+}
+
+// ---- Image attachments ----
+function addImage(rowId) {
+  const inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = 'image/*';
+  inp.onchange = () => {
+    const file = inp.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const r = getRow(rowId);
+      if (!r) return;
+      if (!r.images) r.images = [];
+      r.images.push({ data: e.target.result, name: file.name });
+      render();
+    };
+    reader.readAsDataURL(file);
+  };
+  inp.click();
+}
+function removeImage(rowId, idx) {
+  const r = getRow(rowId);
+  if (!r || !r.images) return;
+  r.images.splice(idx, 1);
+  render();
+}
+function openLightbox(src) {
+  const ov = document.getElementById('img-lightbox-overlay');
+  ov.querySelector('img').src = src;
+  ov.classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('img-lightbox-overlay').classList.remove('open');
+}
+
+function getRow(id) { return rows.find(r => r.id === id); }
+
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escBr(s) {
+  return esc(s).replace(/\n/g,'<br>');
+}
+function renderHtml(s) {
+  if (!s) return '';
+  // Already HTML if it contains tags or HTML entities (stored via innerHTML) — use directly
+  if (s.includes('<') || s.includes('&amp;') || s.includes('&lt;') || s.includes('&gt;')) return s;
+  return escBr(s);
+}
+
+function syncEditables() {
+  document.querySelectorAll('[contenteditable][data-id]').forEach(el => {
+    const r = getRow(+el.dataset.id);
+    if (!r) return;
+    const f = el.dataset.field;
+    r[f] = (f === 'hypothesis' || f === 'title') ? el.innerHTML : el.innerText;
+  });
+}
+
+function bindEditableListeners(container) {
+  container.querySelectorAll('[contenteditable][data-id]').forEach(el => {
+    const field = el.dataset.field;
+    const useHtml = field === 'hypothesis' || field === 'title';
+    el.addEventListener('input', () => {
+      const r = getRow(+el.dataset.id);
+      if (r) r[field] = useHtml ? el.innerHTML : el.innerText;
+    });
+    el.addEventListener('blur', () => {
+      const r = getRow(+el.dataset.id);
+      if (r) r[field] = useHtml ? el.innerHTML : el.innerText.trim();
+    });
+    if (field === 'title' || field === 'theme') {
+      el.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); el.blur(); }
+      });
+    }
+  });
+}
+
+function buildImpactHTML(r) {
+  const impactRows = Object.keys(r.outcomes).map(o => `
+    <div class="out-impact-row">
+      <span class="out-imp-label lO${o[1]}">${o}</span>
+      <div class="lmh-group">
+        ${['L','M','H'].map(lv =>
+          `<button class="lmh-btn${r.outcomes[o] === lv ? ' sel-'+lv : ''}"
+                   onclick="setImpact(${r.id},'${o}','${lv}',this)">${lv}</button>`
+        ).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  const effortOpts = EFFORTS.map(e =>
+    `<option${r.effort === e ? ' selected' : ''}>${e}</option>`
+  ).join('');
+
+  return `
+    <div class="impact-col">
+      <div class="bb-badge ${r.biggestBet ? 'bb-on' : 'bb-off'}">&#9733; Biggest Bet</div>
+      <div class="out-impact-rows">${impactRows}</div>
+      <div class="effort-line">
+        <select class="effort-sel" onchange="setEffort(${r.id},this.value)">${effortOpts}</select>
+        <span class="effort-label">effort</span>
+      </div>
+      <div class="notes-field" contenteditable="true" data-id="${r.id}" data-field="notes">${esc(r.notes)}</div>
+    </div>
+  `;
+}
+
+function buildRowHTML(r, rank) {
+  const surfChips = SURFACES.map(s =>
+    `<span class="chip ${r.surfaces[s] ? 'surf-on' : 'surf-off'}"
+           onclick="toggleSurface(${r.id},'${s}',this)">${esc(s)}</span>`
+  ).join('');
+
+  const outChips = OUTCOMES.map(o => {
+    const on = r.outcomes.hasOwnProperty(o);
+    const lbl = OUTCOME_LABELS[o] || o;
+    return `<span class="chip out-chip ${on ? 'out-on '+o : 'out-off'}"
+                  onclick="toggleOutcome(${r.id},'${o}',this)">
+      <span class="out-code">${o}</span><span class="out-lbl"> ${lbl}</span>
+    </span>`;
+  }).join('');
+
+  return `
+    <tr data-row-id="${r.id}">
+      <td class="rank-cell">
+        <div class="rank-num">${rank + 1}</div>
+      </td>
+      <td>
+        <div class="row-title" contenteditable="true" data-id="${r.id}" data-field="title">${esc(r.title)}</div>
+        <div class="row-hyp"   contenteditable="true" data-id="${r.id}" data-field="hypothesis">${renderHtml(r.hypothesis)}</div>
+        ${r.images && r.images.length ? `<div class="row-images">${r.images.map((img, i) => `
+          <div class="row-image-wrap">
+            <img src="${img.data}" alt="${esc(img.name)}" onclick="openLightbox('${img.data}')" title="Click to enlarge">
+            <button class="row-image-remove" onclick="removeImage(${r.id},${i})" title="Remove">×</button>
+          </div>`).join('')}</div>` : ''}
+        <button class="add-image-btn" onclick="addImage(${r.id})">📎 Add Screenshot</button>
+        <button class="comment-trigger" data-ca="row-${r.id}" onclick="toggleCommentThread('row-${r.id}')">💬 Comment</button>
+        <div class="comment-thread" id="ct-row-${r.id}"></div>
+      </td>
+      <td>
+        <span class="theme-tag" contenteditable="true" data-id="${r.id}" data-field="theme">${esc(r.theme)}</span>
+      </td>
+      <td><div class="chip-row">${surfChips}</div></td>
+      <td><div class="chip-row">${outChips}</div></td>
+      <td class="impact-td">${buildImpactHTML(r)}</td>
+      <td class="actions-td">
+        <div class="row-actions">
+          <button class="move-btn" onclick="moveUp(${r.id})" ${rank === 0 ? 'disabled' : ''} title="Move up">▲</button>
+          <button class="move-btn" onclick="moveDown(${r.id})" ${rank === rows.length - 1 ? 'disabled' : ''} title="Move down">▼</button>
+          <button class="del-btn" onclick="deleteRow(${r.id})" title="Remove">&#10005;</button>
+        </div>
+      </td>
+    </tr>
+  `;
+}
+
+const CUTLINE_ROW = `
+  <tr class="cutline-row">
+    <td colspan="7"><div class="cutline"><span class="cutline-label">Cut Line</span></div></td>
+  </tr>`;
+
+function render() {
+  syncEditables();
+  const tbody = document.getElementById('tbody');
+  const htmlRows = rows.map((r, i) => buildRowHTML(r, i));
+  if (rows.length >= 8) htmlRows.splice(8, 0, CUTLINE_ROW);
+  tbody.innerHTML = htmlRows.join('');
+  bindEditableListeners(tbody);
+  updateAllTriggers();
+}
+
+function refreshImpactCell(id) {
+  const r = getRow(id);
+  if (!r) return;
+  const tr = document.querySelector(`tr[data-row-id="${id}"]`);
+  if (!tr) return;
+  const td = tr.querySelector('.impact-td');
+  if (!td) return;
+  td.innerHTML = buildImpactHTML(r);
+  bindEditableListeners(td);
+}
+
+// --- Interactions ---
+
+function toggleSurface(id, s, el) {
+  const r = getRow(id);
+  if (!r) return;
+  r.surfaces[s] = !r.surfaces[s];
+  el.className = 'chip ' + (r.surfaces[s] ? 'surf-on' : 'surf-off');
+}
+
+function toggleOutcome(id, o, el) {
+  const r = getRow(id);
+  if (!r) return;
+  if (r.outcomes.hasOwnProperty(o)) {
+    delete r.outcomes[o];
+    el.className = 'chip out-off';
+  } else {
+    r.outcomes[o] = null;
+    el.className = `chip out-on ${o}`;
+  }
+  refreshImpactCell(id);
+}
+
+function setImpact(id, o, lv, el) {
+  const r = getRow(id);
+  if (!r) return;
+  const wasSelected = r.outcomes[o] === lv;
+  r.outcomes[o] = wasSelected ? null : lv;
+  const group = el.closest('.lmh-group');
+  if (group) {
+    group.querySelectorAll('.lmh-btn').forEach(b => b.classList.remove('sel-L','sel-M','sel-H'));
+    if (!wasSelected) el.classList.add('sel-' + lv);
+  }
+  r.biggestBet = Object.values(r.outcomes).some(v => v === 'H');
+  refreshImpactCell(id);
+}
+
+function toggleBB(id, el) {
+  const r = getRow(id);
+  if (!r) return;
+  r.biggestBet = !r.biggestBet;
+  el.className = 'bb-badge ' + (r.biggestBet ? 'bb-on' : 'bb-off');
+}
+
+function setEffort(id, val) {
+  const r = getRow(id);
+  if (r) r.effort = val;
+}
+
+function addRow() {
+  syncEditables();
+  rows.push({
+    id: _nid++,
+    title: 'New Initiative',
+    hypothesis: 'If we [do X], buyers will [outcome].',
+    theme: 'Theme',
+    surfaces: { HP: false, Search: false, 'Live Hub': false, VC: false },
+    outcomes: {},
+    biggestBet: false,
+    effort: 'Medium',
+    notes: ''
+  });
+  render();
+  setTimeout(() => {
+    const titles = document.querySelectorAll('.row-title');
+    if (!titles.length) return;
+    const last = titles[titles.length - 1];
+    last.focus();
+    const range = document.createRange();
+    range.selectNodeContents(last);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }, 0);
+}
+
+function deleteRow(id) {
+  if (rows.length <= 1) { alert('Cannot remove the last initiative.'); return; }
+  if (!confirm('Remove this initiative?')) return;
+  rows = rows.filter(r => r.id !== id);
+  render();
+}
+
+function moveUp(id) {
+  syncEditables();
+  const i = rows.findIndex(r => r.id === id);
+  if (i <= 0) return;
+  [rows[i - 1], rows[i]] = [rows[i], rows[i - 1]];
+  render();
+}
+
+function moveDown(id) {
+  syncEditables();
+  const i = rows.findIndex(r => r.id === id);
+  if (i >= rows.length - 1) return;
+  [rows[i], rows[i + 1]] = [rows[i + 1], rows[i]];
+  render();
+}
+
+function downloadForGitHub() {
+  syncEditables();
+  // Build a seed script that bakes current data into the page,
+  // always refreshing data but preserving any reviewer comments.
+  const existing_comments = JSON.stringify(comments);
+  const seed = `
+<div class="img-lightbox-overlay" id="img-lightbox-overlay" onclick="closeLightbox()">
+  <img src="" alt="Screenshot">
+</div>
+
+<div class="cmodal-overlay" id="cmodal-overlay" onclick="if(event.target===this)hideAllComments()">
+  <div class="cmodal">
+    <div class="cmodal-hdr">
+      <h2>All Comments</h2>
+      <button class="cmodal-close" onclick="hideAllComments()">×</button>
+    </div>
+    <div id="all-comments-body"></div>
+  </div>
+</div>
+
+
+</body></html>
