@@ -2192,19 +2192,9 @@ try {
       }
     });
   }
-  const savedGoals = localStorage.getItem('q3-goals-v1');
-  if (savedGoals) { goals = JSON.parse(savedGoals); }
-  const savedPrinciples = localStorage.getItem('q3-principles-v1');
-  if (savedPrinciples) {
-    const _pp = JSON.parse(savedPrinciples);
-    if (_pp[0] && _pp[0].title === 'Earn the Tap Before You Ask for It') {
-      principles = _pp;
-    } else {
-      localStorage.removeItem('q3-principles-v1');
-    }
-  }
-  const savedMetrics = localStorage.getItem('q3-metrics-v1');
-  if (savedMetrics) { metrics = JSON.parse(savedMetrics); }
+  localStorage.removeItem('q3-principles-v1');
+  localStorage.removeItem('q3-goals-v1');
+  localStorage.removeItem('q3-metrics-v1');
   // Repair double-encoded entities left by earlier saves
   rows.forEach(r => {
     ['title','hypothesis'].forEach(f => {
