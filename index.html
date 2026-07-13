@@ -560,7 +560,6 @@ thead th:last-child  { padding: 10px 4px; }
     <button class="tab-btn tab-active" data-tab="roadmap" onclick="switchTab('roadmap')">Roadmap</button>
     <div class="tab-nav-right">
       <button class="comments-nav-btn" id="comments-nav-btn" onclick="showAllComments()">💬 Comments</button>
-      <button class="share-btn" onclick="copyLink()">🔗 Copy Link</button>
     </div>
   </div>
 </nav>
@@ -864,7 +863,11 @@ thead th:last-child  { padding: 10px 4px; }
   </div>
 
   <div id="tab-roadmap" class="tab-section tab-visible">
-    <div class="table-wrap" style="margin:28px 40px; border-radius:12px;">
+    <div style="margin:24px 40px 0; display:flex; align-items:center; justify-content:space-between;">
+      <span style="font-size:13px;color:#86868b;">Q3 2025 · eBay Live Discovery</span>
+      <button class="share-btn" onclick="copyLink()" style="font-size:13px;">🔗 Copy Link</button>
+    </div>
+    <div class="table-wrap" style="margin:16px 40px 28px; border-radius:12px;">
       <table>
         <colgroup><col><col><col><col><col><col><col></colgroup>
         <thead>
@@ -2619,7 +2622,7 @@ function downloadForGitHub() {
       <h2>All Comments</h2>
       <button class="cmodal-close" onclick="hideAllComments()">×</button>
     </div>
-    <div id="all-comments-body"></div>
+    <div id="all-comments-body"><div class="cno-comments">No comments yet.</div></div>
   </div>
 </div>
 
