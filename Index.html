@@ -357,6 +357,25 @@ thead th:last-child  { padding: 10px 4px; }
   border: none; border-top: 1px solid #e5e5ea; margin: 0 40px;
 }
 
+/* Hero banner */
+.hero-banner {
+  background: linear-gradient(180deg, #f5f5f7 0%, #ffffff 100%);
+  padding: 48px 56px 44px;
+  border-bottom: 1px solid #e5e5ea;
+  text-align: center;
+}
+.hero-eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #86868b; margin-bottom: 12px;
+}
+.hero-title {
+  font-size: 52px; font-weight: 800; letter-spacing: -1.5px;
+  line-height: 1.0; margin-bottom: 14px; color: #1d1d1f;
+}
+.hero-meta {
+  font-size: 15px; color: #6e6e73; font-weight: 400; margin-bottom: 0;
+}
+
 /* Principles */
 .principles-wrap { padding: 20px 40px 24px; }
 .principles-section-hdr {
@@ -516,14 +535,19 @@ thead th:last-child  { padding: 10px 4px; }
 
 <div class="page-header">
   <div class="hdr-left">
-    <h1>Q3 Buyer Discovery Roadmap</h1>
-    <p>eBay Live · Discovery Team</p>
+    <span style="font-size:13px;font-weight:600;color:#1d1d1f;">eBay Live · Discovery</span>
   </div>
   <div class="hdr-right">
     <button class="comments-nav-btn" id="comments-nav-btn" onclick="showAllComments()">💬 Comments</button>
     <button class="btn btn-dark" onclick="addRow()">+ Add Initiative</button>
     <button class="btn btn-blue" onclick="saveChanges()">Save Changes</button>
   </div>
+</div>
+
+<div class="hero-banner">
+  <div class="hero-eyebrow">FY27 Q3 2026 &nbsp;·&nbsp; eBay Live Buyer Discovery</div>
+  <div class="hero-title">Buyer Discovery Roadmap</div>
+  <div class="hero-meta">Ridhima Arora &nbsp;·&nbsp; Reviewed with Prerna, JB &amp; Ah-Hyun</div>
 </div>
 
 <div class="main">
