@@ -951,11 +951,12 @@ let rows = [
 ];
 
 try {
-  if (localStorage.getItem('q3-data-version') !== '3') {
+  if (localStorage.getItem('q3-data-version') !== '4') {
     localStorage.removeItem('q3-principles-v1');
     localStorage.removeItem('q3-goals-v1');
     localStorage.removeItem('q3-metrics-v1');
-    localStorage.setItem('q3-data-version', '3');
+    localStorage.removeItem('q3-roadmap-v1');
+    localStorage.setItem('q3-data-version', '4');
   }
 } catch(e) {}
 try {
